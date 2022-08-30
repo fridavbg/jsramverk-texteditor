@@ -1,3 +1,4 @@
+import "./styles/app.scss";
 import Header from "./components/incl/Header";
 import Editor from "./components/Editor";
 
@@ -8,7 +9,10 @@ function App() {
         <div className="App">
             <Header />
             <div>
-                <Editor />
+                {/* <Editor /> */}
+                <div className="parent">
+                    <div className="child" />
+                </div>
             </div>
             <Footer />
         </div>
