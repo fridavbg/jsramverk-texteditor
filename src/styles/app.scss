@@ -1,3 +1,16 @@
+$font-stack: Helvetica, sans-serif;
+$primary-color: rgb(236, 13, 13);
+
 body {
-    background-color: aqua;
+    background-color: rgb(214, 224, 224);
+}
+
+.header {
+    background-color: $primary-color;
+    padding: 2em;
+    border-radius: .5em;
+    text-align: center;
+    h1 {
+        font: 42px $font-stack;
+    }
 }
