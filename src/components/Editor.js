@@ -22,35 +22,54 @@ const modules = {
 
 function Editor() {
     const [value, setValue] = useState("");
+    const [text, setText] = useState(true);
     const editorRef = useRef();
 
     console.log(value);
 
     if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
-    return (
-        <>
-            <button className="saveButton" onClick={() => alert("Hallo")}>
-                Save
-            </button>
-            <div>
-                <ReactQuill
-                    theme="snow"
-                    value={value}
-                    onChange={setValue}
-                    modules={modules}
-                    style={{ height: "3in", margin: "1em", flex: "1" }}
-                    ref={editorRef}
-                />
+    function saveText() {
+        setText(false);
+    }
+
+    function reset() {
+        setText(true);
+    }
+
+    if (text) {
+        return (
+            <>
+                <button className="saveButton" onClick={saveText}>
+                    Save
+                </button>
+                <div>
+                    <ReactQuill
+                        theme="snow"
+                        value={value}
+                        onChange={setValue}
+                        modules={modules}
+                        style={{ height: "3in", margin: "1em", flex: "1" }}
+                        ref={editorRef}
+                    />
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <button className="saveButton" onClick={reset}>
+                    Reset
+                </button>
                 <ReactQuill
                     modules={{ toolbar: null }}
                     value={value}
                     style={{ margin: "1em", flex: "1" }}
                     readOnly={true}
                 />
-            </div>
-        </>
-    );
+            </>
+        );
+    }
 }
 
 export default Editor;
