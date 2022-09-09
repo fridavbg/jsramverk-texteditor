@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 const modules = {
     toolbar: [
@@ -25,15 +25,16 @@ function Editor() {
     const [newText, setNewText] = useState("");
     const editorRef = useRef();
 
-    if (editorRef.current) console.log(editorRef.current.editor.getContents());
+    //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeHandler(event) {
         let newObject = {};
-        if (event.target.name === "title") {
+        if (event.target.name === "title" && editorRef.current && typeof parse(newText).props.children === 'string') {
             newObject[event.target.name] = event.target.value;
+            newObject['description'] = parse(newText).props.children;
+            console.log(newObject);
         }
-        console.log(parse(newText));
-        console.log(newObject);
+        // console.alert('Please fill in both a title and text');
     }
 
     function saveText() {
