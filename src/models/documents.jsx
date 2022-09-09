@@ -1,5 +1,3 @@
-import { JsxEmit } from "typescript";
-
 const docModel = {
     baseUrl: window.location.href.includes("localhost")
         ? "http://localhost:1337"
