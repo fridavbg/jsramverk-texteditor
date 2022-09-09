@@ -1,0 +1,13 @@
+.list {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: column wrap;
+}
+.card {
+    border: 1px solid #000000;
+    margin: 0em 7em 2em 7em;
+    height: min-content;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}

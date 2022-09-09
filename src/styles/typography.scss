@@ -1,0 +1,21 @@
+.header {
+    background-color: $primary-color;
+    padding: 2em;
+    border-radius: 0.5em;
+    h1 {
+        font: 42px $font-stack;
+    }
+}
+
+.title {
+font: 32px $font-stack;
+}
+
+.card h2 {
+    font: 28px $font-stack;
+}
+
+.card p {
+    padding: 1em;
+    line-height: 1.2em;
+}

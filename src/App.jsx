@@ -23,6 +23,7 @@ function App() {
         <div className="App">
             <Header />
             <main>
+                <button class="create-btn">Create new document</button>
                 <DocList docs={docs} />
             </main>
         </div>
