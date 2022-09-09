@@ -39,14 +39,15 @@ function Editor() {
     }
 
     async function saveText() {
-        console.log(typeof newDoc.description);
         if (
             newDoc.title === "" ||
             newDoc.title === undefined ||
             newDoc.description === undefined ||
-            typeof newDoc.description === "object"
+            newDoc.description === "" ||
+            newDoc.description.hasOwnProperty("key")
         ) {
             alert("Please fill in a title and a text");
+            return;
         }
         await docModel.createDoc(newDoc);
     }
