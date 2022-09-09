@@ -1,6 +1,6 @@
 import Editor from "./Editor";
 
-function DocCard({ doc, key }) {
+function DocCard({ doc, index }) {
     function editor(e) {
         e.preventDefault();
         window.location = './Editor.jsx';
