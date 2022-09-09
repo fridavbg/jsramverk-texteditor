@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import parse from 'html-react-parser';
 
 const modules = {
     toolbar: [
@@ -21,55 +22,48 @@ const modules = {
 };
 
 function Editor() {
-    const [value, setValue] = useState("");
-    const [text, setText] = useState(true);
+    const [newText, setNewText] = useState("");
     const editorRef = useRef();
-
-    console.log(value);
 
     if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
+    function changeHandler(event) {
+        let newObject = {};
+        if (event.target.name === "title") {
+            newObject[event.target.name] = event.target.value;
+        }
+        console.log(parse(newText));
+        console.log(newObject);
+    }
+
     function saveText() {
-        setText(false);
+        console.log("save object");
     }
 
-    function reset() {
-        setText(true);
-    }
-
-    if (text) {
-        return (
-            <>
-                <button className="saveButton" onClick={saveText}>
-                    Save
-                </button>
-                <div>
-                    <ReactQuill
-                        theme="snow"
-                        value={value}
-                        onChange={setValue}
-                        modules={modules}
-                        style={{ height: "3in", margin: "1em", flex: "1" }}
-                        ref={editorRef}
-                    />
-                </div>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <button className="saveButton" onClick={reset}>
-                    Reset
-                </button>
-                <ReactQuill
-                    modules={{ toolbar: null }}
-                    value={value}
-                    style={{ margin: "1em", flex: "1" }}
-                    readOnly={true}
+    return (
+        <>
+            <button className="create-btn" onClick={saveText}>
+                Save
+            </button>
+            <div>
+                <input
+                    placeholder="Add a title"
+                    className="title-input"
+                    onChange={changeHandler}
+                    name="title"
                 />
-            </>
-        );
-    }
+                <ReactQuill
+                    name="text"
+                    theme="snow"
+                    placeholder={"Write something awesome..."}
+                    onChange={setNewText}
+                    modules={modules}
+                    style={{ height: "3in", margin: "1em", flex: "1" }}
+                    ref={editorRef}
+                />
+            </div>
+        </>
+    );
 }
 
 export default Editor;

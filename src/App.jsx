@@ -36,7 +36,6 @@ function App() {
                 <main>
                     {/* <button className="create-btn">Create new document</button> */}
                     <CreateButton
-                        // createDoc={this.triggerAddDocState}
                         addDoc={() => setState("create")}
                     />
                     <DocList docs={docs} />
