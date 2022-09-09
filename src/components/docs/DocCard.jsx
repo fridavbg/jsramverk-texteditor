@@ -1,4 +1,3 @@
-import Editor from "./Editor";
 
 function DocCard({ doc, index }) {
     function editor(e) {
@@ -9,7 +8,7 @@ function DocCard({ doc, index }) {
         <div className="card">
             <h2>{doc.title}</h2>
             <p>{doc.description}</p>
-            <button onClick={editor}className="edit-btn">Edit</button>
+            <button className="edit-btn">Edit</button>
         </div>
     );
 }

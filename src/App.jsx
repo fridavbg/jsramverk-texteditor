@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
 import DocList from "./components/docs/DocList";
-import Editor from "./components/docs/Editor";
+import CreateEditor from "./components/docs/createEditor";
 
 function App() {
     const [state, setState] = useState("start");
@@ -41,7 +41,7 @@ function App() {
                     <DocList docs={docs} />
                 </main>
             )}
-            {state === "create" && <Editor />}
+            {state === "create" && <CreateEditor />}
         </div>
     );
 }
