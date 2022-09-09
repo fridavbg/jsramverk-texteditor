@@ -1,10 +1,7 @@
-# Getting Started with Create React App
+# React Text Editor
+## 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
+## Start the project:
 
 ### `npm start`
 
@@ -14,12 +11,16 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+## Tests
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+## Deploy
 ### `npm run build`
+### `rsync -av --delete build/ frpe21@ssh.student.bth.se:www/editor`
+[StudentServer-TextEditor](www.student.bth.se/~frpe21/editor)
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
