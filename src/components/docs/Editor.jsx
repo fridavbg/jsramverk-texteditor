@@ -22,23 +22,25 @@ const modules = {
 };
 
 function Editor() {
-    const [newText, setNewText] = useState("");
+    const [newDoc, setNewDoc] = useState("");
     const editorRef = useRef();
-
+    let newObject = {};
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
-    function changeHandler(event) {
-        let newObject = {};
-        if (event.target.name === "title" && editorRef.current && typeof parse(newText).props.children === 'string') {
-            newObject[event.target.name] = event.target.value;
-            newObject['description'] = parse(newText).props.children;
-            console.log(newObject);
-        }
+    function changeTitle(event) {
+        newObject[event.target.name] = event.target.value;
+        console.log(newObject);
+        // console.alert('Please fill in both a title and text');
+    }
+
+    function changeText(event) {
+        newObject['description'] = event
+        console.log(newObject);
         // console.alert('Please fill in both a title and text');
     }
 
     function saveText() {
-        console.log("save object");
+        console.log(newDoc);
     }
 
     return (
@@ -50,14 +52,16 @@ function Editor() {
                 <input
                     placeholder="Add a title"
                     className="title-input"
-                    onChange={changeHandler}
+                    onChange={changeTitle}
                     name="title"
                 />
                 <ReactQuill
                     name="text"
                     theme="snow"
                     placeholder={"Write something awesome..."}
-                    onChange={setNewText}
+                    onChange={(event) => {
+                        changeText(parse(event).props.children);
+                    }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
