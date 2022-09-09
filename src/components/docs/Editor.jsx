@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
+import docModel from "../../models/documents";
 
 const modules = {
     toolbar: [
@@ -22,25 +23,24 @@ const modules = {
 };
 
 function Editor() {
-    const [newDoc, setNewDoc] = useState("");
+    const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
-        console.log(newObject);
-        // console.alert('Please fill in both a title and text');
+        setNewDoc({ ...newDoc, ...newObject });
     }
 
     function changeText(event) {
-        newObject['description'] = event
-        console.log(newObject);
-        // console.alert('Please fill in both a title and text');
+        newObject["description"] = event;
+        setNewDoc({ ...newDoc, ...newObject });
     }
 
-    function saveText() {
-        console.log(newDoc);
+    async function saveText() {
+        await docModel.createDoc(newDoc);
+        console.log("Added. " + newDoc.title);
     }
 
     return (

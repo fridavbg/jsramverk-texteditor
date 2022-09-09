@@ -1,3 +1,5 @@
+import { JsxEmit } from "typescript";
+
 const docModel = {
     baseUrl: window.location.href.includes("localhost")
         ? "http://localhost:1337"
@@ -8,6 +10,19 @@ const docModel = {
         const docs = await response.json();
 
         return docs.data;
+    },
+    createDoc: async function createDoc(newDoc) {
+        const response = await fetch(`${docModel.baseUrl}/docs`, {
+            body: JSON.stringify(newDoc),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST'
+        });
+
+        const result = await response.json();
+
+        console.log(result);
     },
 };
 
