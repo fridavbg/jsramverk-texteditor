@@ -10,7 +10,7 @@ const docModel = {
         return docs.data;
     },
     createDoc: async function createDoc(newDoc) {
-        const response = await fetch(`${docModel.baseUrl}/docs`, {
+        const response = await fetch(`${docModel.baseUrl}/docs/create`, {
             body: JSON.stringify(newDoc),
             headers: {
                 'content-type': 'application/json'

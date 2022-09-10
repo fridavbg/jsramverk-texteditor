@@ -1,5 +1,4 @@
 function DocCard({ doc, index }) {
-    console.log(doc.title);
     return (
         <div className="card">
             <h2>{doc.title}</h2>

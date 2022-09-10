@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -26,6 +27,7 @@ function Editor() {
     const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};
+    const navigate = useNavigate();
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeTitle(event) {
@@ -50,6 +52,8 @@ function Editor() {
             return;
         }
         await docModel.createDoc(newDoc);
+        console.log('Added: ' + newDoc);
+        navigate('/');
     }
 
     return (
