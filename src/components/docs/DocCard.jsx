@@ -1,14 +1,18 @@
-import { Route } from 'react-router-dom';
-import Editor from "./Editor";
+import { useNavigate } from "react-router-dom";
 
 function DocCard({ doc, index }) {
+    const navigate = useNavigate();
+
+    const editDoc = () => {
+        navigate("/edit");
+    };
+
     return (
         <div className="card">
             <p>{doc._id}</p>
             <h2>{doc.title}</h2>
             <p>{doc.description}</p>
-            {/* <Route exact path="/edit/{doc._id}" component={Editor} /> */}
-            <button className="edit-btn">
+            <button className="edit-btn" onClick={editDoc}>
                 Edit
             </button>
         </div>

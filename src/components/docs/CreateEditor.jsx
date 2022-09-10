@@ -23,7 +23,7 @@ const modules = {
     ],
 };
 
-function Editor() {
+function CreateEditor() {
     const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};
@@ -52,7 +52,7 @@ function Editor() {
             return;
         }
         await docModel.createDoc(newDoc);
-        console.log('Added: ' + newDoc);
+
         navigate('/');
     }
 
@@ -84,4 +84,4 @@ function Editor() {
     );
 }
 
-export default Editor;
+export default CreateEditor;

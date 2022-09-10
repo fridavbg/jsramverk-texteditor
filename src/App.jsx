@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
 import DocList from "./components/docs/DocList";
-import Editor from "./components/docs/Editor";
+import CreateEditor from "./components/docs/CreateEditor";
+import UpdateDoc from "./components/docs/UpdateDoc";
 
 function App() {
     const [docs, setDocs] = useState([]);
@@ -26,8 +27,8 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<DocList docs={docs} />} />
-                <Route path="/create" element={<Editor />} />
-                <Route path="/edit" element={<Editor />} />
+                <Route path="/create" element={<CreateEditor />} />
+                <Route path="/edit" element={<UpdateDoc />} />
             </Routes>
         </Router>
     );
