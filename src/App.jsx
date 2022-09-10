@@ -27,7 +27,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<DocList docs={docs} />} />
                 <Route path="/create" element={<Editor />} />
-                <Route path="/create" element={<Editor />} />
+                <Route path="/edit" element={<Editor />} />
             </Routes>
         </Router>
     );
