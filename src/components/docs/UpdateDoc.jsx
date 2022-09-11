@@ -25,9 +25,13 @@ const modules = {
 
 function CreateEditor() {
     const location = useLocation();
-    console.log('Current Doc: ');
-    console.log(location.state.doc);
-    const [newDoc, setNewDoc] = useState({});
+    // console.log("Current Doc: ");
+    // console.log(location.state.doc);
+    const [newDoc, setNewDoc] = useState({
+        _id: location.state.doc._id,
+        title: location.state.doc.title,
+        description: location.state.doc.description,
+    });
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
@@ -54,9 +58,11 @@ function CreateEditor() {
             alert("Please fill in a title and a text");
             return;
         }
-        await docModel.createDoc(newDoc);
+        console.log("Doc to goes into db: ");
+        console.log(newDoc);
+        //   await docModel.createDoc(newDoc);
 
-        navigate("/");
+        //   navigate("/");
     }
 
     return (
@@ -66,7 +72,7 @@ function CreateEditor() {
             </button>
             <div>
                 <input
-                    placeholder={location.state.doc.title}
+                    value={newDoc.title}
                     className="title-input"
                     onChange={changeTitle}
                     name="title"
@@ -74,7 +80,9 @@ function CreateEditor() {
                 <ReactQuill
                     name="text"
                     theme="snow"
-                    placeholder={location.state.doc.description}
+                    // SETTING value wont work
+                    // value={newDoc.description}
+                    placeholder={newDoc.description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                     }}
