@@ -58,11 +58,11 @@ function CreateEditor() {
             alert("Please fill in a title and a text");
             return;
         }
-        console.log("Doc to goes into db: ");
-        console.log(newDoc);
-        //   await docModel.createDoc(newDoc);
+        // console.log("Doc to goes into db: ");
+        // console.log(newDoc);
+        await docModel.updateDoc(newDoc);
 
-        //   navigate("/");
+        navigate("/");
     }
 
     return (
