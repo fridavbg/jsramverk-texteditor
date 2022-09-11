@@ -62,7 +62,7 @@ function CreateEditor() {
         // console.log(newDoc);
         await docModel.updateDoc(newDoc);
 
-        navigate("/");
+        navigate("/docs");
     }
 
     return (
@@ -80,9 +80,7 @@ function CreateEditor() {
                 <ReactQuill
                     name="text"
                     theme="snow"
-                    // SETTING value wont work
-                    // value={newDoc.description}
-                    placeholder={newDoc.description}
+                    defaultValue={newDoc.description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                     }}

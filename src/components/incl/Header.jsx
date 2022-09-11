@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 function Header() {
     const navigate = useNavigate();
     const goHome = () => {
-        navigate("/");
+        navigate("/docs");
     };
 
     const createDoc = () => {

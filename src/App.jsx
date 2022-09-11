@@ -25,8 +25,12 @@ function App() {
     return (
         <Router className="App">
             <Header />
+            <h2 className="title">Welcome</h2>
             <Routes>
-                <Route path="/" element={<DocList docs={docs} />} />
+                <Route
+                    path="/docs"
+                    element={<DocList docs={docs} />}
+                />
                 <Route path="/create" element={<CreateEditor />} />
                 <Route path="/edit" element={<UpdateDoc />} />
             </Routes>
