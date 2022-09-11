@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -23,8 +23,10 @@ const modules = {
     ],
 };
 
-function UpdateDoc({ doc }) {
-    console.log('UpdateDoc: ' + doc);
+function CreateEditor() {
+    const location = useLocation();
+    console.log('Current Doc: ');
+    console.log(location.state.doc);
     const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};
@@ -53,26 +55,26 @@ function UpdateDoc({ doc }) {
             return;
         }
         await docModel.createDoc(newDoc);
-        console.log('Added: ' + newDoc);
-        navigate('/');
+
+        navigate("/");
     }
 
     return (
         <>
-            {doc}
             <button className="create-btn" onClick={saveText}>
                 Update
             </button>
             <div>
                 <input
+                    placeholder={location.state.doc.title}
                     className="title-input"
                     onChange={changeTitle}
                     name="title"
-                    value={doc}
                 />
                 <ReactQuill
                     name="text"
                     theme="snow"
+                    placeholder={location.state.doc.description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                     }}
@@ -85,4 +87,4 @@ function UpdateDoc({ doc }) {
     );
 }
 
-export default UpdateDoc;
+export default CreateEditor;
