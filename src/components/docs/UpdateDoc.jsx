@@ -24,6 +24,7 @@ const modules = {
 };
 
 function UpdateDoc({ doc }) {
+    console.log('UpdateDoc: ' + doc);
     const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};

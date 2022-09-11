@@ -1,7 +1,7 @@
 const docModel = {
-    baseUrl: window.location.href.includes("localhost")
-        ? "http://localhost:1337"
-        : "https://jsramverk-editor-frpe21.azurewebsites.nets",
+    baseUrl: window.location.href.includes(":1337") ?
+        "http://localhost:1337" :
+        "https://jsramverk-editor-frpe21.azurewebsites.net",
     getAllDocs: async function getAllDocs() {
         const response = await fetch(`${docModel.baseUrl}/docs`);
 
