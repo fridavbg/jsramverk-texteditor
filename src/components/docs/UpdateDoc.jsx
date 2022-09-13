@@ -62,7 +62,7 @@ function CreateEditor() {
         // console.log(newDoc);
         await docModel.updateDoc(newDoc);
 
-        navigate("/docs");
+        navigate("/");
     }
 
     return (

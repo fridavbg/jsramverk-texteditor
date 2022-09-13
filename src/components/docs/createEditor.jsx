@@ -43,7 +43,7 @@ function Editor() {
 
     async function saveText() {
         await docModel.createDoc(newDoc);
-        navigate("/docs");
+        navigate("/");
     }
 
     return (
