@@ -1,9 +1,7 @@
-import { JsxEmit } from "typescript";
-
 const docModel = {
     baseUrl: window.location.href.includes("localhost")
         ? "http://localhost:1337"
-        : "https://jsramverk-editor-frpe21.azurewebsites.nets",
+        : "https://jsramverk-editor-frpe21.azurewebsites.net",
     getAllDocs: async function getAllDocs() {
         const response = await fetch(`${docModel.baseUrl}/docs`);
 
@@ -12,17 +10,33 @@ const docModel = {
         return docs.data;
     },
     createDoc: async function createDoc(newDoc) {
-        const response = await fetch(`${docModel.baseUrl}/docs`, {
+        const response = await fetch(`${docModel.baseUrl}/docs/create`, {
             body: JSON.stringify(newDoc),
             headers: {
-                'content-type': 'application/json'
+                "content-type": "application/json",
             },
-            method: 'POST'
+            method: "POST",
         });
 
         const result = await response.json();
 
-        console.log(result);
+        return result.data;
+    },
+    updateDoc: async function updateDoc(updateDoc) {
+        const response = await fetch(
+            `${docModel.baseUrl}/docs/edit/${updateDoc._id}`,
+            {
+                body: JSON.stringify(updateDoc),
+                headers: {
+                    "content-type": "application/json",
+                },
+                method: "POST",
+            }
+        );
+
+        const result = await response.json();
+        console.log(result.data);
+        return result.data;
     },
 };
 

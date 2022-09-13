@@ -2,14 +2,13 @@ import DocCard from "./DocCard";
 
 function DocList({ docs }) {
     const docCards = docs.map((doc, index) => {
-        return <DocCard doc={doc} key={index}></DocCard>;
+        return <DocCard key={index} doc={doc} />;
     });
-    return (
-        <>
-            <h2 className="title">Documents</h2>
-            <div className="list">{docCards}</div>
-        </>
-    );
+    if (docCards.length > 0) {
+        return <div className="list">{docCards}</div>;
+    } else {
+        return <p>No documents are in the database</p>;
+    }
 }
 
 export default DocList;

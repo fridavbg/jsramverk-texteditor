@@ -1,21 +1,16 @@
 import "./styles/app.scss";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
+import Main from "./components/incl/Main";
 import DocList from "./components/docs/DocList";
-import CreateEditor from "./components/docs/createEditor";
+import CreateEditor from "./components/docs/CreateEditor";
+import UpdateDoc from "./components/docs/UpdateDoc";
+
 
 function App() {
-    const [state, setState] = useState("start");
     const [docs, setDocs] = useState([]);
-
-    const CreateButton = (props) => {
-        return (
-            <button className="create-btn" onClick={props.addDoc}>
-                Create a document
-            </button>
-        );
-    };
 
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
@@ -30,19 +25,22 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
+        <Router className="App">
             <Header />
-            {state === "start" && (
-                <main>
-                    {/* <button className="create-btn">Create new document</button> */}
-                    <CreateButton
-                        addDoc={() => setState("create")}
-                    />
-                    <DocList docs={docs} />
-                </main>
-            )}
-            {state === "create" && <CreateEditor />}
-        </div>
+            <Routes>
+            <Route
+                    path="/"
+                    element={<Main />}
+                />
+                <Route
+                    path="/docs"
+                    element={<DocList docs={docs} />}
+                />
+                <Route path="/create" element={<CreateEditor />} />
+                <Route path="/edit" element={<UpdateDoc />} />
+            </Routes>
+        </Router>
+
     );
 }
 

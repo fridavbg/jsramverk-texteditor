@@ -1,14 +1,21 @@
+import { useNavigate } from "react-router-dom";
+
 
 function DocCard({ doc, index }) {
-    function editor(e) {
-        e.preventDefault();
-        window.location = './Editor.jsx';
-    }
+    const navigate = useNavigate();
+    const editDoc = () => {
+        navigate("/edit", { replace: true, state: {doc} });
+    };
+
     return (
         <div className="card">
+            <p>{doc._id}</p>
             <h2>{doc.title}</h2>
             <p>{doc.description}</p>
-            <button className="edit-btn">Edit</button>
+            <button className="edit-btn" onClick={editDoc}>
+                Edit
+            </button>
+
         </div>
     );
 }
