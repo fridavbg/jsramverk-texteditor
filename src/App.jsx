@@ -8,6 +8,7 @@ import DocList from "./components/docs/DocList";
 import CreateEditor from "./components/docs/CreateEditor";
 import UpdateDoc from "./components/docs/UpdateDoc";
 
+
 function App() {
     const [docs, setDocs] = useState([]);
 
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/edit" element={<UpdateDoc />} />
             </Routes>
         </Router>
+
     );
 }
 
