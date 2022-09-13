@@ -1,5 +1,10 @@
 import "./styles/app.scss";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    BrowserRouter,
+} from "react-router-dom";
 import { useState, useEffect } from "react";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
@@ -24,21 +29,15 @@ function App() {
     }, []);
 
     return (
-        <Router className="App">
+        <BrowserRouter className="App" basename={'~frpe21/editor/'}>
             <Header />
             <Routes>
-            <Route
-                    path="/"
-                    element={<Main />}
-                />
-                <Route
-                    path="/docs"
-                    element={<DocList docs={docs} />}
-                />
+                <Route path="/" element={<Main />} />
+                <Route path="/docs" element={<DocList docs={docs} />} />
                 <Route path="/create" element={<CreateEditor />} />
                 <Route path="/edit" element={<UpdateDoc />} />
             </Routes>
-        </Router>
+        </BrowserRouter>
     );
 }
 
