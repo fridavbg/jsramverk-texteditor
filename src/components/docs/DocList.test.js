@@ -22,6 +22,8 @@ test("render a document in a DocCard", () => {
             </Routes>
         </BrowserRouter>
     );
-    const docList = screen.getByText("Test I");
+    const docList = screen.getAllByText(/Test i/i);
     expect(docList).toBeDefined();
+    expect(docList).toHaveLength(2);
+
 });
