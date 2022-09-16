@@ -3,11 +3,10 @@ import Header from "./components/incl/Header.jsx";
 import Main from "./components/incl/Main.jsx";
 
 jest.mock("./components/incl/Header.jsx");
-jest.mock("./components/docs/DocList.jsx");
 
 test("renders main page", () => {
-    const { getByText } = render(<Main />);
-    const main = getByText("Welcome");
+    render(<Main />);
+    const main = screen.getByText("Welcome");
 
     expect(main).toBeDefined();
 });
@@ -15,9 +14,9 @@ test("renders main page", () => {
 test("renders header page", () => {
     Header.mockImplementation(() => <div>React Text Editor</div>);
 
-    const { getByText } = render(<Header />);
+    render(<Header />);
 
-    const header = getByText("React Text Editor");
+    const header = screen.getByText("React Text Editor");
 
     expect(header).toBeDefined();
 });
