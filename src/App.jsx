@@ -1,9 +1,8 @@
 import "./styles/app.scss";
 import {
-    BrowserRouter as Router,
+    BrowserRouter,
     Routes,
     Route,
-    BrowserRouter,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import docModel from "./models/documents";

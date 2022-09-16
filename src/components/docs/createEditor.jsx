@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -23,12 +23,11 @@ const modules = {
     ],
 };
 
-function Editor() {
+function CreateEditor() {
     const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
-
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeTitle(event) {
@@ -42,8 +41,19 @@ function Editor() {
     }
 
     async function saveText() {
+        if (
+            newDoc.title === "" ||
+            newDoc.title === undefined ||
+            newDoc.description === undefined ||
+            newDoc.description === "" ||
+            newDoc.description.hasOwnProperty("key")
+        ) {
+            alert("Please fill in a title and a text");
+            return;
+        }
         await docModel.createDoc(newDoc);
-        navigate("/");
+
+        navigate('/');
     }
 
     return (
@@ -74,4 +84,4 @@ function Editor() {
     );
 }
 
-export default Editor;
+export default CreateEditor;

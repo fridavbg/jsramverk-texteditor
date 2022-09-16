@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 
-import Main from "../incl/Main.jsx";
 import DocList from "./DocList.jsx";
 
 const listOfDocs = [
