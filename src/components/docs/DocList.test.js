@@ -14,7 +14,7 @@ const listOfDocs = [
     },
 ];
 
-test("render a document in a DocCard", () => {
+test("render documents in a DocList", () => {
     render(
         <BrowserRouter>
             <Routes>
@@ -25,5 +25,4 @@ test("render a document in a DocCard", () => {
     const docList = screen.getAllByText(/Test i/i);
     expect(docList).toBeDefined();
     expect(docList).toHaveLength(2);
-
 });
