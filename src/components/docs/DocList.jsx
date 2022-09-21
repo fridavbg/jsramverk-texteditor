@@ -2,8 +2,6 @@ import DocCard from "./DocCard";
 
 function DocList({ docs, description, updateDescription }) {
     const docCards = docs.map((doc, index) => {
-        console.log("Socket - Doclist");
-        console.log(description);
         return (
             <DocCard
                 key={index}

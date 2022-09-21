@@ -29,8 +29,8 @@ function App() {
     }, []);
 
     useEffect(() => {
-        console.log("App.jsx - From socket");
-        console.log(description);
+        // console.log("App.jsx - From socket");
+        // console.log(description);
     }, [description]);
 
     // Socket -> localhost connection 

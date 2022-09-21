@@ -25,10 +25,12 @@ const modules = {
 
 function CreateEditor() {
     const location = useLocation();
-    console.log("Location state doc: ");
+
+    console.log("UPDATEDOC: Location state doc: ");
     console.log(location.state.doc);
-    console.log("Location state description: ");
+    console.log("UPDATEDOC: Location state description: ");
     console.log(location.state.description);
+
     const [newDoc, setNewDoc] = useState({
         _id: location.state.doc._id,
         title: location.state.doc.title,
@@ -82,7 +84,9 @@ function CreateEditor() {
                 <ReactQuill
                     name="text"
                     theme="snow"
-                    defaultValue={newDoc.description}
+                    defaultValue={
+                        newDoc.description + " TEXT FROM SOCKET: " + location.state.description
+                    }
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                     }}
