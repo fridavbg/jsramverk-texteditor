@@ -1,8 +1,17 @@
 import DocCard from "./DocCard";
 
-function DocList({ docs }) {
+function DocList({ docs, description, updateDescription }) {
     const docCards = docs.map((doc, index) => {
-        return <DocCard key={index} doc={doc} />;
+        console.log("Socket - Doclist");
+        console.log(description);
+        return (
+            <DocCard
+                key={index}
+                doc={doc}
+                description={description[doc._id]}
+                updateDescription={updateDescription}
+            />
+        );
     });
     if (docCards.length > 0) {
         return <div className="list">{docCards}</div>;

@@ -25,8 +25,10 @@ const modules = {
 
 function CreateEditor() {
     const location = useLocation();
-    // console.log("Current Doc: ");
-    // console.log(location.state.doc);
+    console.log("Location state doc: ");
+    console.log(location.state.doc);
+    console.log("Location state description: ");
+    console.log(location.state.description);
     const [newDoc, setNewDoc] = useState({
         _id: location.state.doc._id,
         title: location.state.doc.title,
@@ -58,7 +60,7 @@ function CreateEditor() {
             alert("Please fill in a title and a text");
             return;
         }
-        // console.log("Doc to goes into db: ");
+        // console.log("Doc goes into db: ");
         // console.log(newDoc);
         await docModel.updateDoc(newDoc);
 
