@@ -5,6 +5,7 @@ import {
     Route,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
 import Main from "./components/incl/Main";
@@ -12,9 +13,15 @@ import DocList from "./components/docs/DocList";
 import CreateEditor from "./components/docs/CreateEditor";
 import UpdateDoc from "./components/docs/UpdateDoc";
 
+let sendToSocket = false;
+
+function changeSendToSocket(value) {
+  sendToSocket = value;
+}
 
 function App() {
     const [docs, setDocs] = useState([]);
+    const [socket, setSocket] = useState(null);
 
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
