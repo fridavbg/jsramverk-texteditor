@@ -24,7 +24,7 @@ function App() {
         (async () => {
             await fetchDocs();
 
-            setDescription({"631cf7f83991e1dde312ef74" : "Socket update"})
+            setDescription({ "631cf7f83991e1dde312ef74": "Socket update" });
         })();
     }, []);
 
@@ -33,7 +33,7 @@ function App() {
         // console.log(description);
     }, [description]);
 
-    // Socket -> localhost connection 
+    // Socket -> localhost connection
     useEffect(() => {
         setSocket(io("http://localhost:1337"));
         return () => {
@@ -50,7 +50,6 @@ function App() {
     //         console.log(data);
     //     })
     // }, [socket])
-    
 
     function updateDescription(id, newDescription) {
         const tmpObject = {};
@@ -59,7 +58,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter className="App" basename={"~frpe21/editor/"}>
+        <BrowserRouter className="App" basename={docModel.baseName}>
             <Header />
             <Routes>
                 <Route path="/" element={<Main />} />
