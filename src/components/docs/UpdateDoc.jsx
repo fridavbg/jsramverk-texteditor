@@ -23,7 +23,7 @@ const modules = {
     ],
 };
 
-function CreateEditor({ description, updateDescription }) {
+function UpdateDoc({ description, updateDescription }) {
     const location = useLocation();
 
     const [newDoc, setNewDoc] = useState({
@@ -31,10 +31,20 @@ function CreateEditor({ description, updateDescription }) {
         title: location.state.doc.title,
         description: location.state.doc.description,
     });
+
+    description[newDoc._id] = location.state.doc.description;
+    
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
+
+    function changeHandler(event) {
+        console.log(event);
+        description[newDoc._id] = event;
+        updateDescription({...description, ...newObject});
+        console.log(description[newDoc._id])
+    }
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
@@ -77,24 +87,20 @@ function CreateEditor({ description, updateDescription }) {
                     name="title"
                 />
                 <ReactQuill
-                    name="text"
+                    name="description"
                     theme="snow"
-                    defaultValue={
-                        " TEXT FROM SOCKET: " +
-                        location.state.description
-                    }
+                    defaultValue={description[newDoc._id]}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
-                        // updateDescription(newDoc.id, newDoc.description);
+                        changeHandler(parse(event).props.children);
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
-                    description={description}
                 />
             </div>
         </>
     );
 }
 
-export default CreateEditor;
+export default UpdateDoc;

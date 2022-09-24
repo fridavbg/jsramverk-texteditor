@@ -29,7 +29,8 @@ function App() {
             return { ...acc, ...tmpObject };
         }, {});
         setDescription(descriptionObj);
-        console.log(description);
+
+        // console.log(description);
         setDocs(allDocs);
     }
 
@@ -37,16 +38,14 @@ function App() {
         (async () => {
             await fetchDocs();
         })();
-    }, []);
+    });
 
     useEffect(() => {
-        console.log(sendToSocket);
         if (socket && sendToSocket) {
             socket.emit("description", description);
         }
 
         changeSendToSocket(true);
-        console.log(sendToSocket);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [description]);
@@ -68,6 +67,8 @@ function App() {
             socket.on("description", function (data) {
                 changeSendToSocket(false);
                 setDescription(data);
+                console.log("DATA: ");
+                console.log(data);
             });
         }
     }, [socket]);
@@ -76,6 +77,7 @@ function App() {
         const tmpObject = {};
         tmpObject[id] = newDescription;
         setDescription({ ...description, ...tmpObject });
+        console.log(description);
     }
 
     return (
@@ -88,21 +90,19 @@ function App() {
                     element={
                         <DocList
                             docs={docs}
-                            description={description}
-                            updateDescription={updateDescription}
                         />
                     }
                 />
+                <Route path="/create" element={<CreateEditor />} />
                 <Route
-                    path="/create"
+                    path="/edit"
                     element={
-                        <CreateEditor
+                        <UpdateDoc
                             description={description}
                             updateDescription={updateDescription}
                         />
                     }
                 />
-                <Route path="/edit" element={<UpdateDoc />} />
             </Routes>
         </BrowserRouter>
     );

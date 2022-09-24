@@ -1,13 +1,11 @@
 import DocCard from "./DocCard";
 
-function DocList({ docs, description, updateDescription }) {
+function DocList({ docs}) {
     const docCards = docs.map((doc, index) => {
         return (
             <DocCard
                 key={index}
                 doc={doc}
-                description={description[doc._id]}
-                updateDescription={updateDescription}
             />
         );
     });
