@@ -23,13 +23,8 @@ const modules = {
     ],
 };
 
-function CreateEditor() {
+function CreateEditor({ description, updateDescription }) {
     const location = useLocation();
-
-    console.log("UPDATEDOC: Location state doc: ");
-    console.log(location.state.doc);
-    console.log("UPDATEDOC: Location state description: ");
-    console.log(location.state.description);
 
     const [newDoc, setNewDoc] = useState({
         _id: location.state.doc._id,
@@ -85,14 +80,17 @@ function CreateEditor() {
                     name="text"
                     theme="snow"
                     defaultValue={
-                        newDoc.description + " TEXT FROM SOCKET: " + location.state.description
+                        " TEXT FROM SOCKET: " +
+                        location.state.description
                     }
                     onChange={(event) => {
                         changeText(parse(event).props.children);
+                        // updateDescription(newDoc.id, newDoc.description);
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
+                    description={description}
                 />
             </div>
         </>

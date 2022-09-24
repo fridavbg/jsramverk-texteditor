@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 function DocCard({ doc, index, description, updateDescription }) {
     const navigate = useNavigate();
-    const editDoc = () => {
+    const editDoc = ({ updateDescription }) => {
         navigate("/edit", {
             replace: true,
             state: {
