@@ -23,15 +23,6 @@ function App() {
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
 
-        // set initial value for socket description
-        const descriptionObj = allDocs.reduce((acc, doc) => {
-            let tmpObject = {};
-            tmpObject[doc._id] = doc.description;
-            return { ...acc, ...tmpObject };
-        }, {});
-
-        setDescription(descriptionObj);
-
         setDocs(allDocs);
     }
 
@@ -43,7 +34,7 @@ function App() {
 
     useEffect(() => {
         if (socket && sendToSocket) {
-            socket.emit("update", description);
+            socket.emit("create", description["_id"]);
         }
         changeSendToSocket(true);
 
@@ -61,25 +52,6 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Socket -> localhost update after change
-    useEffect(() => {
-        if (socket) {
-            socket.on("update", function (data) {
-                changeSendToSocket(false);
-                console.log(data);
-                setDescription(data);
-            });
-        }
-    }, [socket]);
-
-    function updateDescription(id, newDescription) {
-        const tmpObject = {};
-        tmpObject[id] = newDescription;
-        setDescription({ ...description, ...tmpObject });
-        console.log("DESCRIPTION: ");
-        console.log(description);
-    }
-
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
             <Header />
@@ -89,12 +61,7 @@ function App() {
                 <Route path="/create" element={<CreateEditor />} />
                 <Route
                     path="/edit"
-                    element={
-                        <UpdateDoc
-                            description={description}
-                            updateDescription={updateDescription}
-                        />
-                    }
+                    element={<UpdateDoc description={description} />}
                 />
             </Routes>
         </BrowserRouter>

@@ -34,17 +34,14 @@ function UpdateDoc({ description, updateDescription }) {
     });
 
     description[newDoc._id] = location.state.doc.description;
-    
+
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeHandler(event) {
-        // console.log(event);
-        description[newDoc._id] = event;
-        updateDescription({...description, ...newObject});
-        // console.log(description[newDoc._id])
+        console.log(description[newDoc._id]);
     }
 
     function changeTitle(event) {
@@ -99,7 +96,6 @@ function UpdateDoc({ description, updateDescription }) {
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
                 />
-                Socket description: {description[newDoc._id]}
             </div>
         </>
     );
