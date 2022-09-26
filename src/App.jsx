@@ -22,7 +22,15 @@ function App() {
 
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
+        // add all descriptions to
 
+        const descriptionsObject = allDocs.reduce((acc, doc) => {
+            let tmpObject = {};
+            tmpObject[doc._id] = doc.description;
+            return { ...acc, ...tmpObject };
+        }, {});
+
+        setDescription(descriptionsObject);
         setDocs(allDocs);
     }
 
@@ -36,6 +44,7 @@ function App() {
 
     useEffect(() => {
         if (socket && sendToSocket) {
+            console.log(docById);
             socket.emit("create", docById);
         }
         changeSendToSocket(true);
@@ -43,7 +52,7 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [docById]);
 
-    let DocToUpdate = description; 
+    let DocToUpdate = description;
 
     useEffect(() => {
         if (socket && sendToSocket) {
@@ -53,7 +62,7 @@ function App() {
                 console.log(DocToUpdate);
             });
         }
-        changeSendToSocket(true);
+        changeSendToSocket(false);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DocToUpdate]);
@@ -64,10 +73,20 @@ function App() {
         return () => {
             if (socket) {
                 socket.disconnect();
+                console.log("Disconnected");
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [description]);
+
+    function updateDescription(id, newDescription) {
+        const tmpObject = {};
+
+        tmpObject[id] = newDescription;
+
+        setDescription({ ...newDescription, ...tmpObject });
+
+    }
 
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
@@ -81,7 +100,7 @@ function App() {
                     element={
                         <UpdateDoc
                             description={description}
-                            setDescription={setDescription}
+                            updateDescription={updateDescription}
                         />
                     }
                 />

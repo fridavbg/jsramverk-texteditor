@@ -23,7 +23,7 @@ const modules = {
     ],
 };
 
-function CreateEditor({ description, updateDescription }) {
+function CreateEditor() {
     const [newDoc, setNewDoc] = useState({});
     const editorRef = useRef();
     let newObject = {};
@@ -37,7 +37,6 @@ function CreateEditor({ description, updateDescription }) {
 
     function changeText(event) {
         newObject["description"] = event;
-        
         setNewDoc({ ...newDoc, ...newObject });
     }
 
@@ -54,7 +53,7 @@ function CreateEditor({ description, updateDescription }) {
         }
         await docModel.createDoc(newDoc);
 
-        navigate("/");
+        navigate('/');
     }
 
     return (
@@ -72,7 +71,7 @@ function CreateEditor({ description, updateDescription }) {
                 <ReactQuill
                     name="text"
                     theme="snow"
-                    defaultValue={description}
+                    placeholder={"Write something awesome..."}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                     }}

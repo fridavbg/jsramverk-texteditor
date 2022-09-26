@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
@@ -24,7 +24,7 @@ const modules = {
     ],
 };
 
-function UpdateDoc({ description, setDescription }) {
+function UpdateDoc({ description, updateDescription }) {
     const location = useLocation();
 
     const [newDoc, setNewDoc] = useState({
@@ -45,6 +45,9 @@ function UpdateDoc({ description, setDescription }) {
 
     function changeText(event) {
         newObject["description"] = event;
+        updateDescription(newDoc._id, event);
+        console.log("Change text func: ");
+        console.log(description[newDoc._id]);
         setNewDoc({ ...newDoc, ...newObject });
     }
 
@@ -80,11 +83,9 @@ function UpdateDoc({ description, setDescription }) {
                 <ReactQuill
                     name="description"
                     theme="snow"
-                    defaultValue={description}
+                    defaultValue={newDoc.description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
-                        setDescription(parse(event).props.children)
-                        console.log(description);
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
