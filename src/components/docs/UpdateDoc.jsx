@@ -33,20 +33,14 @@ function UpdateDoc({ description, setDescription }) {
         description: location.state.doc.description,
     });
 
-    // Description default varde ?? 
-    description[newDoc._id] = location.state.doc.description;
-
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeHandler(event) {
-        console.log(event);
-        // setDescription(event)
+        setDescription(event);
         console.log(description);
-        // ASSIGN EVENT to description ??
-        
     }
 
     function changeTitle(event) {
@@ -70,7 +64,7 @@ function UpdateDoc({ description, setDescription }) {
             alert("Please fill in a title and a text");
             return;
         }
-        
+
         await docModel.updateDoc(newDoc);
 
         navigate("/");
@@ -91,7 +85,7 @@ function UpdateDoc({ description, setDescription }) {
                 <ReactQuill
                     name="description"
                     theme="snow"
-                    defaultValue={newDoc.description}
+                    defaultValue={description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                         changeHandler(parse(event).props.children);

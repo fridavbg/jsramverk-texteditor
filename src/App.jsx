@@ -32,6 +32,8 @@ function App() {
         })();
     });
 
+    let selectedDoc = description["_id"];
+
     useEffect(() => {
         if (socket && sendToSocket) {
             socket.emit("create", description["_id"]);
@@ -39,7 +41,21 @@ function App() {
         changeSendToSocket(true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [description]);
+    }, [selectedDoc]);
+
+    let currentDoc = description; 
+
+    useEffect(() => {
+        if (socket && sendToSocket) {
+            socket.on("update", (data) => {
+                socket.emit("update", data);
+                console.log(currentDoc);
+            });
+        }
+        changeSendToSocket(true);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentDoc]);
 
     // Socket -> localhost connection
     useEffect(() => {
@@ -50,7 +66,7 @@ function App() {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [description]);
 
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
@@ -61,8 +77,12 @@ function App() {
                 <Route path="/create" element={<CreateEditor />} />
                 <Route
                     path="/edit"
-                    element={<UpdateDoc description={description}
-                    setDescription={setDescription}/>}
+                    element={
+                        <UpdateDoc
+                            description={description}
+                            setDescription={setDescription}
+                        />
+                    }
                 />
             </Routes>
         </BrowserRouter>
