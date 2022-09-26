@@ -38,11 +38,6 @@ function UpdateDoc({ description, setDescription }) {
     const navigate = useNavigate();
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
-    function changeHandler(event) {
-        setDescription(event);
-        console.log(description);
-    }
-
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
         setNewDoc({ ...newDoc, ...newObject });
@@ -88,7 +83,8 @@ function UpdateDoc({ description, setDescription }) {
                     defaultValue={description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
-                        changeHandler(parse(event).props.children);
+                        setDescription(parse(event).props.children)
+                        console.log(description);
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}

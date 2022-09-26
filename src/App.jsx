@@ -32,30 +32,31 @@ function App() {
         })();
     });
 
-    let selectedDoc = description["_id"];
+    let docById = description["_id"];
 
     useEffect(() => {
         if (socket && sendToSocket) {
-            socket.emit("create", description["_id"]);
+            socket.emit("create", docById);
         }
         changeSendToSocket(true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedDoc]);
+    }, [docById]);
 
-    let currentDoc = description; 
+    let DocToUpdate = description; 
 
     useEffect(() => {
         if (socket && sendToSocket) {
-            socket.on("update", (data) => {
-                socket.emit("update", data);
-                console.log(currentDoc);
+            socket.on("update", (DocToUpdate) => {
+                socket.emit("update", DocToUpdate);
+                console.log("Updating: ");
+                console.log(DocToUpdate);
             });
         }
         changeSendToSocket(true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentDoc]);
+    }, [DocToUpdate]);
 
     // Socket -> localhost connection
     useEffect(() => {
