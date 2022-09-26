@@ -24,7 +24,7 @@ const modules = {
     ],
 };
 
-function UpdateDoc({ description, updateDescription }) {
+function UpdateDoc({ description, setDescription }) {
     const location = useLocation();
 
     const [newDoc, setNewDoc] = useState({
@@ -33,6 +33,7 @@ function UpdateDoc({ description, updateDescription }) {
         description: location.state.doc.description,
     });
 
+    // Description default varde ?? 
     description[newDoc._id] = location.state.doc.description;
 
     const editorRef = useRef();
@@ -41,7 +42,11 @@ function UpdateDoc({ description, updateDescription }) {
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeHandler(event) {
-        console.log(description[newDoc._id]);
+        console.log(event);
+        // setDescription(event)
+        console.log(description);
+        // ASSIGN EVENT to description ??
+        
     }
 
     function changeTitle(event) {
@@ -65,8 +70,7 @@ function UpdateDoc({ description, updateDescription }) {
             alert("Please fill in a title and a text");
             return;
         }
-        // console.log("Doc goes into db: ");
-        console.log(newDoc);
+        
         await docModel.updateDoc(newDoc);
 
         navigate("/");

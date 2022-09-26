@@ -61,7 +61,8 @@ function App() {
                 <Route path="/create" element={<CreateEditor />} />
                 <Route
                     path="/edit"
-                    element={<UpdateDoc description={description} />}
+                    element={<UpdateDoc description={description}
+                    setDescription={setDescription}/>}
                 />
             </Routes>
         </BrowserRouter>
