@@ -7,7 +7,7 @@ const docModel = {
         const response = await fetch(`${docModel.baseUrl}/docs`);
 
         const docs = await response.json();
-
+        console.log(docs);
         return docs.data;
     },
     createDoc: async function createDoc(newDoc) {

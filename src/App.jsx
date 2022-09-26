@@ -23,14 +23,15 @@ function App() {
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
 
+        // set initial value for socket description
         const descriptionObj = allDocs.reduce((acc, doc) => {
             let tmpObject = {};
             tmpObject[doc._id] = doc.description;
             return { ...acc, ...tmpObject };
         }, {});
+
         setDescription(descriptionObj);
 
-        // console.log(description);
         setDocs(allDocs);
     }
 
@@ -42,9 +43,8 @@ function App() {
 
     useEffect(() => {
         if (socket && sendToSocket) {
-            socket.emit("description", description);
+            socket.emit("update", description);
         }
-
         changeSendToSocket(true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,11 +64,10 @@ function App() {
     // Socket -> localhost update after change
     useEffect(() => {
         if (socket) {
-            socket.on("description", function (data) {
+            socket.on("update", function (data) {
                 changeSendToSocket(false);
-                setDescription(data);
-                console.log("DATA: ");
                 console.log(data);
+                setDescription(data);
             });
         }
     }, [socket]);
@@ -77,6 +76,7 @@ function App() {
         const tmpObject = {};
         tmpObject[id] = newDescription;
         setDescription({ ...description, ...tmpObject });
+        console.log("DESCRIPTION: ");
         console.log(description);
     }
 
@@ -85,14 +85,7 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<Main />} />
-                <Route
-                    path="/docs"
-                    element={
-                        <DocList
-                            docs={docs}
-                        />
-                    }
-                />
+                <Route path="/docs" element={<DocList docs={docs} />} />
                 <Route path="/create" element={<CreateEditor />} />
                 <Route
                     path="/edit"

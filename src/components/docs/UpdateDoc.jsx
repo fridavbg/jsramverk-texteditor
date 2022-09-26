@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
+
 import docModel from "../../models/documents";
 
 const modules = {
@@ -40,10 +41,10 @@ function UpdateDoc({ description, updateDescription }) {
     //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeHandler(event) {
-        console.log(event);
+        // console.log(event);
         description[newDoc._id] = event;
         updateDescription({...description, ...newObject});
-        console.log(description[newDoc._id])
+        // console.log(description[newDoc._id])
     }
 
     function changeTitle(event) {
@@ -68,7 +69,7 @@ function UpdateDoc({ description, updateDescription }) {
             return;
         }
         // console.log("Doc goes into db: ");
-        // console.log(newDoc);
+        console.log(newDoc);
         await docModel.updateDoc(newDoc);
 
         navigate("/");
@@ -89,7 +90,7 @@ function UpdateDoc({ description, updateDescription }) {
                 <ReactQuill
                     name="description"
                     theme="snow"
-                    defaultValue={description[newDoc._id]}
+                    defaultValue={newDoc.description}
                     onChange={(event) => {
                         changeText(parse(event).props.children);
                         changeHandler(parse(event).props.children);
@@ -98,6 +99,7 @@ function UpdateDoc({ description, updateDescription }) {
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
                 />
+                Socket description: {description[newDoc._id]}
             </div>
         </>
     );
