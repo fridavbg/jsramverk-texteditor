@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
+import { io } from "socket.io-client";
 
 import docModel from "../../models/documents";
 
@@ -24,7 +25,13 @@ const modules = {
     ],
 };
 
-function UpdateDoc({ description, updateDescription }) {
+function UpdateDoc({
+    socket,
+    sendToSocket,
+    changeSendToSocket,
+    description,
+    updateDescription,
+}) {
     const location = useLocation();
 
     const [newDoc, setNewDoc] = useState({
@@ -46,8 +53,6 @@ function UpdateDoc({ description, updateDescription }) {
     function changeText(event) {
         newObject["description"] = event;
         updateDescription(newDoc._id, event);
-        console.log("Change text func: ");
-        console.log(description[newDoc._id]);
         setNewDoc({ ...newDoc, ...newObject });
     }
 
@@ -67,6 +72,19 @@ function UpdateDoc({ description, updateDescription }) {
 
         navigate("/");
     }
+
+    let docById = newDoc._id;
+
+    useEffect(() => {
+        console.log("Socket room: ");
+        console.log(docById);
+        if (socket && sendToSocket) {
+            socket.emit("create", docById);
+        }
+        changeSendToSocket(true);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [docById]);
 
     return (
         <>
@@ -91,6 +109,8 @@ function UpdateDoc({ description, updateDescription }) {
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
                 />
+                Socket:
+                {description[newDoc._id]}
             </div>
         </>
     );

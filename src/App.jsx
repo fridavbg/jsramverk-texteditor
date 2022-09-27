@@ -38,31 +38,19 @@ function App() {
         (async () => {
             await fetchDocs();
         })();
-    });
-
-    let docById = description["_id"];
-
-    useEffect(() => {
-        if (socket && sendToSocket) {
-            console.log(docById);
-            socket.emit("create", docById);
-        }
-        changeSendToSocket(true);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [docById]);
+    }, []);
 
     let DocToUpdate = description;
 
     useEffect(() => {
+        console.log("DocToUpdate: ");
+        console.log(DocToUpdate);
         if (socket && sendToSocket) {
             socket.on("update", (DocToUpdate) => {
                 socket.emit("update", DocToUpdate);
-                console.log("Updating: ");
-                console.log(DocToUpdate);
             });
         }
-        changeSendToSocket(false);
+        changeSendToSocket(true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DocToUpdate]);
@@ -85,7 +73,7 @@ function App() {
         tmpObject[id] = newDescription;
 
         setDescription({ ...newDescription, ...tmpObject });
-
+        console.log(description);
     }
 
     return (
@@ -99,6 +87,9 @@ function App() {
                     path="/edit"
                     element={
                         <UpdateDoc
+                            socket={socket}
+                            sendToSocket={sendToSocket}
+                            changeSendToSocket={changeSendToSocket}
                             description={description}
                             updateDescription={updateDescription}
                         />
