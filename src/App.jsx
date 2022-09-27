@@ -9,11 +9,11 @@ import DocList from "./components/docs/DocList";
 import CreateEditor from "./components/docs/CreateEditor";
 import UpdateDoc from "./components/docs/UpdateDoc";
 
-let sendToSocket = false;
+// let sendToSocket = false;
 
-function changeSendToSocket(value) {
-    sendToSocket = value;
-}
+// function changeSendToSocket(value) {
+//     sendToSocket = value;
+// }
 
 function App() {
     const [docs, setDocs] = useState([]);
@@ -59,18 +59,7 @@ function App() {
                 <Route path="/" element={<Main />} />
                 <Route path="/docs" element={<DocList docs={docs} />} />
                 <Route path="/create" element={<CreateEditor />} />
-                <Route
-                    path="/edit"
-                    element={
-                        <UpdateDoc
-                            socket={socket}
-                            sendToSocket={sendToSocket}
-                            changeSendToSocket={changeSendToSocket}
-                            description={description}
-                            setDescription={setDescription}
-                        />
-                    }
-                />
+                <Route path="/edit" element={<UpdateDoc />} />
             </Routes>
         </BrowserRouter>
     );
