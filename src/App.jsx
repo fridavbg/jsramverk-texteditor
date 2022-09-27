@@ -22,8 +22,8 @@ function App() {
 
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
-        // add all descriptions to
 
+        // All Descriptions default value
         const descriptionsObject = allDocs.reduce((acc, doc) => {
             let tmpObject = {};
             tmpObject[doc._id] = doc.description;
@@ -40,21 +40,6 @@ function App() {
         })();
     }, []);
 
-    let DocToUpdate = description;
-
-    useEffect(() => {
-        console.log("DocToUpdate: ");
-        console.log(DocToUpdate);
-        if (socket && sendToSocket) {
-            socket.on("update", (DocToUpdate) => {
-                socket.emit("update", DocToUpdate);
-            });
-        }
-        changeSendToSocket(true);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [DocToUpdate]);
-
     // Socket -> localhost connection
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
@@ -66,15 +51,6 @@ function App() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [description]);
-
-    function updateDescription(id, newDescription) {
-        const tmpObject = {};
-
-        tmpObject[id] = newDescription;
-
-        setDescription({ ...newDescription, ...tmpObject });
-        console.log(description);
-    }
 
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
@@ -91,7 +67,7 @@ function App() {
                             sendToSocket={sendToSocket}
                             changeSendToSocket={changeSendToSocket}
                             description={description}
-                            updateDescription={updateDescription}
+                            setDescription={setDescription}
                         />
                     }
                 />

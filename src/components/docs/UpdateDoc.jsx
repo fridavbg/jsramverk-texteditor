@@ -30,7 +30,7 @@ function UpdateDoc({
     sendToSocket,
     changeSendToSocket,
     description,
-    updateDescription,
+    setDescription,
 }) {
     const location = useLocation();
 
@@ -52,6 +52,7 @@ function UpdateDoc({
 
     function changeText(event) {
         newObject["description"] = event;
+        // UPDATE Socket text by ID onChange Event
         updateDescription(newDoc._id, event);
         setNewDoc({ ...newDoc, ...newObject });
     }
@@ -73,10 +74,24 @@ function UpdateDoc({
         navigate("/");
     }
 
+    function updateDescription(id, newDescription) {
+        const tmpObject = {};
+
+        tmpObject[id] = newDescription;
+
+        console.log("Updating. . .");
+        console.log(newDescription);
+        console.log("tmpObject: ");
+        console.log(tmpObject);
+        setDescription({ ...newDescription, ...tmpObject });
+        console.log("All descriptions in App: ");
+        console.log(description);
+    }
+
     let docById = newDoc._id;
 
     useEffect(() => {
-        console.log("Socket room: ");
+        console.log("Socket room - ID used to create: ");
         console.log(docById);
         if (socket && sendToSocket) {
             socket.emit("create", docById);
@@ -85,6 +100,23 @@ function UpdateDoc({
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [docById]);
+
+    let DocToUpdate = description[newDoc._id];
+
+    useEffect(() => {
+        console.log("All descriptions in UpdateDoc: ");
+        console.log(description);
+        console.log("DocToUpdate: ");
+        console.log(DocToUpdate);
+        if (socket && sendToSocket) {
+            socket.on("update", (DocToUpdate) => {
+                socket.emit("update", DocToUpdate);
+            });
+        }
+        changeSendToSocket(true);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [DocToUpdate]);
 
     return (
         <>
