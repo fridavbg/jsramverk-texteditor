@@ -26,8 +26,12 @@ const modules = {
 
 function UpdateDoc() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
+    const [decscription, setDescription] = useState("");
+    let newObject = {};
 
     let sendToSocket = true;
 
@@ -53,67 +57,92 @@ function UpdateDoc() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    let updateEditorOnChange = false;
-
-    function handleChange(event) {
-        if (socket) {
-            socket.emit("update", {
-                _id: newDoc._id,
-                description: parse(event).props.children,
-            });
-            console.log("Sending: ");
-            setNewDoc(newDoc);
-            console.log(newDoc);
-            // if (updateEditorOnChange) {
-            // 
-            // }
-        }
-        // updateEditorOnChange = true;
+    function changeTitle(event) {
+        newObject[event.target.name] = event.target.value;
+        setNewDoc({ ...newDoc, ...newObject });
     }
 
-    function updateEditor(content, triggerChange) {
+    let updateEditorOnChange = false;
+
+    function handleTextChange(event) {
+        if (socket) {
+            let updatedDoc = {
+                _id: newDoc._id,
+                description: parse(event).props.children,
+            };
+            socket.emit("update", updatedDoc);
+            console.log("Sending ... ");
+            console.log(updatedDoc.description);
+        }
+    }
+
+    function updateEditor(
+        content
+        // ,
+        // triggerChange
+    ) {
         let editor = document.querySelector(".ql-editor > p");
+        console.log("EDITOR UPDATE:");
         console.log(editor);
-        // updateeditorOnChange = triggerChange;
-        editor.value = "";
-        // updateeditorOnChange = triggerChange;
-        // editor.insertHTML(content);
+    }
+
+    async function saveText() {
+        if (
+            newDoc.title === "" ||
+            newDoc.title === undefined ||
+            newDoc.description === undefined ||
+            newDoc.description === "" ||
+            newDoc.description.hasOwnProperty("key")
+        ) {
+            alert("Please fill in a title and a text");
+            return;
+        }
+
+        await docModel.updateDoc(newDoc);
+
+        navigate("/");
     }
 
     useEffect(() => {
         if (socket) {
             // create room with ID
             socket.emit("create", newDoc._id);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [socket]);
-
-    useEffect(() => {
-        if (socket) {
             socket.on("update", function (data) {
                 console.log("received doc:");
                 setNewDoc({ ...newDoc, description: data.description });
                 console.log(newDoc);
+                updateEditor(newDoc.description);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [newDoc]);
+    }, [socket]);
 
     return (
         <>
-            <ReactQuill
-                className="editor"
-                name="description"
-                theme="snow"
-                defaultValue={newDoc.description}
-                onChange={(event) => {
-                    handleChange(event);
-                    // updateEditor();
-                }}
-                modules={modules}
-                style={{ height: "3in", margin: "1em", flex: "1" }}
-                ref={editorRef}
-            />
+            <button className="create-btn" onClick={saveText}>
+                Update
+            </button>
+            <div>
+                <input
+                    value={newDoc.title}
+                    className="title-input"
+                    onChange={changeTitle}
+                    name="title"
+                />
+                <ReactQuill
+                    className="editor"
+                    name="description"
+                    theme="snow"
+                    defaultValue={newDoc.description}
+                    onChange={(event) => {
+                        handleTextChange(event);
+                        // updateEditor();
+                    }}
+                    modules={modules}
+                    style={{ height: "3in", margin: "1em", flex: "1" }}
+                    ref={editorRef}
+                />
+            </div>
         </>
     );
 }
