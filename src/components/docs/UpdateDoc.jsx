@@ -71,16 +71,12 @@ function UpdateDoc() {
                 description: parse(event).props.children,
             };
             socket.emit("update", updatedDoc);
-            console.log("Sending ... ");
+            console.log("Sending ");
             console.log(updatedDoc.description);
         }
     }
 
-    function updateEditor(
-        content
-        // ,
-        // triggerChange
-    ) {
+    function updateEditor(content, triggerChange) {
         let editor = document.querySelector(".ql-editor > p");
         console.log("EDITOR UPDATE:");
         console.log(editor);
@@ -108,10 +104,17 @@ function UpdateDoc() {
             // create room with ID
             socket.emit("create", newDoc._id);
             socket.on("update", function (data) {
-                console.log("received doc:");
-                setNewDoc({ ...newDoc, description: data.description });
-                console.log(newDoc);
-                updateEditor(newDoc.description);
+                let updatedDoc = {
+                    _id: newDoc._id,
+                    description: data.description,
+                };
+                console.log("Receiving from Socket:");
+                console.log("Data: ");
+                console.log(data.description);
+                setNewDoc({ ...newDoc, ...updatedDoc });
+                console.log("State: ");
+                console.log(newDoc.description);
+                // updateEditor(newDoc.description, true);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
