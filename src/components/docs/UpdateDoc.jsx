@@ -104,14 +104,10 @@ function UpdateDoc() {
             // create room with ID
             socket.emit("create", newDoc._id);
             socket.on("update", function (data) {
-                let updatedDoc = {
-                    _id: newDoc._id,
-                    description: data.description,
-                };
                 console.log("Receiving from Socket:");
                 console.log("Data: ");
                 console.log(data.description);
-                setNewDoc({ ...newDoc, ...updatedDoc });
+                setNewDoc({ ...newDoc, description: data.description });
                 console.log("State: ");
                 console.log(newDoc.description);
                 // updateEditor(newDoc.description, true);
