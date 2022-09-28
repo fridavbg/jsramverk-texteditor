@@ -29,12 +29,19 @@ function UpdateDoc() {
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
 
+    let sendToSocket = true;
+
+    function changeSendToSocket(value) {
+        sendToSocket = value;
+    }
+
     const [newDoc, setNewDoc] = useState({
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
     });
 
+    // create socket & clear
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
         return () => {
@@ -46,31 +53,62 @@ function UpdateDoc() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    let updateEditorOnChange = false;
+
+    function handleChange(event) {
+        if (socket) {
+            socket.emit("update", {
+                _id: newDoc._id,
+                description: parse(event).props.children,
+            });
+            console.log("Sending: ");
+            console.log(newDoc);
+            // if (updateEditorOnChange) {
+            //     setNewDoc(newDoc);
+            // }
+        }
+        // updateEditorOnChange = true;
+    }
+
+    function updateEditor(content, triggerChange) {
+        let editor = document.querySelector(".ql-editor > p");
+        console.log(editor);
+        // updateeditorOnChange = triggerChange;
+        editor.value = "";
+        // editor.editor.setSelectedRange([0, 0]);
+        // updateeditorOnChange = triggerChange;
+        // editor.insertHTML(content);
+    }
+
     useEffect(() => {
         if (socket) {
+            // create room with ID
             socket.emit("create", newDoc._id);
-            socket.on("update", function (data) {
-                setNewDoc({ ...newDoc, description: data.description });
-                console.log(data);
-            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket]);
 
+    useEffect(() => {
+        if (socket) {
+            socket.on("update", function (data) {
+                console.log("received doc:");
+                setNewDoc({ ...newDoc, description: data.description });
+                console.log(newDoc);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [newDoc]);
+
     return (
         <>
             <ReactQuill
+                className="editor"
                 name="description"
                 theme="snow"
                 defaultValue={newDoc.description}
                 onChange={(event) => {
-                    console.log(parse(event).props.children);
-                    if (socket) {
-                        socket.emit("update", {
-                            _id: newDoc._id,
-                            description: parse(event).props.children,
-                        });
-                    }
+                    handleChange(event);
+                    // updateEditor();
                 }}
                 modules={modules}
                 style={{ height: "3in", margin: "1em", flex: "1" }}
