@@ -62,9 +62,10 @@ function UpdateDoc() {
                 description: parse(event).props.children,
             });
             console.log("Sending: ");
+            setNewDoc(newDoc);
             console.log(newDoc);
             // if (updateEditorOnChange) {
-            //     setNewDoc(newDoc);
+            // 
             // }
         }
         // updateEditorOnChange = true;
@@ -75,7 +76,6 @@ function UpdateDoc() {
         console.log(editor);
         // updateeditorOnChange = triggerChange;
         editor.value = "";
-        // editor.editor.setSelectedRange([0, 0]);
         // updateeditorOnChange = triggerChange;
         // editor.insertHTML(content);
     }
