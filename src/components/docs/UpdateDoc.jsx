@@ -77,10 +77,12 @@ function UpdateDoc() {
     function updateEditor(content, triggerChange) {
         // sendToSocket = triggerChange;
         // editorRef.current.editor.value = "";
-        // console.log(editorRef.current.editor.getSelection().index);
         // console.log(editorRef.current.editor.value);
         // sendToSocket = triggerChange;
+        // console.log(editorRef.current.editor.getSelection().index);
         editorRef.current.editor.setText(content);
+        // console.log(editorRef.current.editor.getSelection().index);
+        // editorRef.current.editor.setSelection();
     }
 
     async function saveText() {
