@@ -28,8 +28,16 @@ function UpdateDoc() {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const [newDoc, setNewDoc] = useState({
+        _id: location.state.doc._id,
+        title: location.state.doc.title,
+        description: location.state.doc.description,
+    });
+    
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
+    const [value, setValue] = useState(newDoc.description);
+
     let newObject = {};
 
     let sendToSocket = true;
@@ -37,12 +45,6 @@ function UpdateDoc() {
     function changeSendToSocket(value) {
         sendToSocket = value;
     }
-
-    const [newDoc, setNewDoc] = useState({
-        _id: location.state.doc._id,
-        title: location.state.doc.title,
-        description: location.state.doc.description,
-    });
 
     // create socket & clear
     useEffect(() => {
@@ -61,25 +63,12 @@ function UpdateDoc() {
         setNewDoc({ ...newDoc, ...newObject });
     }
 
-    function handleTextChange(event) {
-        if (socket && sendToSocket) {
-            let updatedDoc = {
-                _id: newDoc._id,
-                description: parse(event).props.children,
-            };
-            socket.emit("update", updatedDoc);
-            // console.log("Sending ");
-            // console.log(updatedDoc.description);
-            changeSendToSocket(true);
-        }
-    }
-
     function updateEditor(content, triggerChange) {
         // sendToSocket = triggerChange;
         // editorRef.current.editor.value = "";
         // console.log(editorRef.current.editor.value);
         // sendToSocket = triggerChange;
-        // console.log(editorRef.current.editor.getSelection().index);
+        console.log(editorRef.current.editor.getSelection());
         editorRef.current.editor.setText(content);
         // console.log(editorRef.current.editor.getSelection().index);
         // editorRef.current.editor.setSelection();
@@ -107,17 +96,33 @@ function UpdateDoc() {
             // create room with ID
             socket.emit("create", newDoc._id);
             socket.on("update", function (data) {
-                // console.log("Receiving from Socket:");
-                // console.log("Data: ");
-                // console.log(data.description);
-                setNewDoc({ ...newDoc, description: data.description });
-                // console.log("State: ");
-                // console.log(newDoc.description);
-                updateEditor(data.description);
+                console.log("Receiving from Socket:");
+                console.log("Data: ");
+                console.log(data.description);
+                // setNewDoc({ ...newDoc, description: data.description });
+                setValue(data.description);
+                console.log("State: ");
+                console.log(newDoc.description);
+                // updateEditor(data.description);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket]);
+
+    const updateState = (text) => {
+        if (socket) {
+            let updatedDoc = {
+                _id: newDoc._id,
+                description: text,
+            };
+            socket.emit("update", updatedDoc);
+
+            // console.log("Sending ");
+            // console.log(updatedDoc.description);
+
+            // changeSendToSocket(true);
+        }
+    };
 
     return (
         <>
@@ -135,10 +140,9 @@ function UpdateDoc() {
                     className="editor"
                     name="description"
                     theme="snow"
-                    defaultValue={newDoc.description}
-                    onChange={(event) => {
-                        handleTextChange(event);
-                    }}
+                    value={value}
+                    // defaultValue={newDoc.description}
+                    onChange={updateState}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
