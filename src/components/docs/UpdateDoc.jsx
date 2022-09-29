@@ -77,7 +77,8 @@ function UpdateDoc() {
     function updateEditor(content, triggerChange) {
         // sendToSocket = triggerChange;
         // editorRef.current.editor.value = "";
-        // console.log(editorRef.current.editor.getSelection());
+        // console.log(editorRef.current.editor.getSelection().index);
+        // console.log(editorRef.current.editor.value);
         // sendToSocket = triggerChange;
         editorRef.current.editor.setText(content);
     }
