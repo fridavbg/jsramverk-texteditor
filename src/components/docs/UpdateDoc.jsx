@@ -30,7 +30,6 @@ function UpdateDoc() {
 
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
-    const [decscription, setDescription] = useState("");
     let newObject = {};
 
     let sendToSocket = true;
@@ -62,24 +61,25 @@ function UpdateDoc() {
         setNewDoc({ ...newDoc, ...newObject });
     }
 
-    let updateEditorOnChange = false;
-
     function handleTextChange(event) {
-        if (socket) {
+        if (socket && sendToSocket) {
             let updatedDoc = {
                 _id: newDoc._id,
                 description: parse(event).props.children,
             };
             socket.emit("update", updatedDoc);
-            console.log("Sending ");
-            console.log(updatedDoc.description);
+            // console.log("Sending ");
+            // console.log(updatedDoc.description);
+            changeSendToSocket(true);
         }
     }
 
     function updateEditor(content, triggerChange) {
-        let editor = document.querySelector(".ql-editor > p");
-        console.log("EDITOR UPDATE:");
-        console.log(editor);
+        // sendToSocket = triggerChange;
+        // editorRef.current.editor.value = "";
+        // console.log(editorRef.current.editor.getSelection());
+        // sendToSocket = triggerChange;
+        editorRef.current.editor.setText(content);
     }
 
     async function saveText() {
@@ -104,13 +104,13 @@ function UpdateDoc() {
             // create room with ID
             socket.emit("create", newDoc._id);
             socket.on("update", function (data) {
-                console.log("Receiving from Socket:");
-                console.log("Data: ");
-                console.log(data.description);
+                // console.log("Receiving from Socket:");
+                // console.log("Data: ");
+                // console.log(data.description);
                 setNewDoc({ ...newDoc, description: data.description });
-                console.log("State: ");
-                console.log(newDoc.description);
-                // updateEditor(newDoc.description, true);
+                // console.log("State: ");
+                // console.log(newDoc.description);
+                updateEditor(data.description);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,7 +135,6 @@ function UpdateDoc() {
                     defaultValue={newDoc.description}
                     onChange={(event) => {
                         handleTextChange(event);
-                        // updateEditor();
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
