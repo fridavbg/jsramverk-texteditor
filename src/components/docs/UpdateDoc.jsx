@@ -33,18 +33,12 @@ function UpdateDoc() {
         title: location.state.doc.title,
         description: location.state.doc.description,
     });
-    
+
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
 
     let newObject = {};
-
-    let sendToSocket = true;
-
-    function changeSendToSocket(value) {
-        sendToSocket = value;
-    }
 
     // create socket & clear
     useEffect(() => {
@@ -61,17 +55,6 @@ function UpdateDoc() {
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
         setNewDoc({ ...newDoc, ...newObject });
-    }
-
-    function updateEditor(content, triggerChange) {
-        // sendToSocket = triggerChange;
-        // editorRef.current.editor.value = "";
-        // console.log(editorRef.current.editor.value);
-        // sendToSocket = triggerChange;
-        console.log(editorRef.current.editor.getSelection());
-        editorRef.current.editor.setText(content);
-        // console.log(editorRef.current.editor.getSelection().index);
-        // editorRef.current.editor.setSelection();
     }
 
     async function saveText() {
@@ -96,14 +79,13 @@ function UpdateDoc() {
             // create room with ID
             socket.emit("create", newDoc._id);
             socket.on("update", function (data) {
-                console.log("Receiving from Socket:");
-                console.log("Data: ");
-                console.log(data.description);
-                // setNewDoc({ ...newDoc, description: data.description });
+                let newObject = {
+                    _id: newDoc._id,
+                    title: newDoc.title,
+                    description: data.description,
+                };
+                setNewDoc({ ...newDoc, ...newObject })
                 setValue(data.description);
-                console.log("State: ");
-                console.log(newDoc.description);
-                // updateEditor(data.description);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,12 +97,16 @@ function UpdateDoc() {
                 _id: newDoc._id,
                 description: text,
             };
+            let newObject = {
+                _id: newDoc._id,
+                title: newDoc.title,
+                description: text,
+            };
             socket.emit("update", updatedDoc);
-
-            // console.log("Sending ");
-            // console.log(updatedDoc.description);
-
-            // changeSendToSocket(true);
+            setValue(text);
+            setNewDoc({ ...newDoc, ...newObject })
+            // console.log("updateState func: ");
+            // console.log(newDoc)
         }
     };
 
@@ -141,7 +127,6 @@ function UpdateDoc() {
                     name="description"
                     theme="snow"
                     value={value}
-                    // defaultValue={newDoc.description}
                     onChange={updateState}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}

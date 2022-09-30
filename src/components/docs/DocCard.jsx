@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import parse from "html-react-parser";
 
 function DocCard({ doc, index }) {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ function DocCard({ doc, index }) {
         <div className="card">
             {/* <p>{doc._id}</p> */}
             <h2>{doc.title}</h2>
-            <p>{doc.description}</p>
+            <p>{parse(doc.description)}</p>
             <button className="edit-btn" onClick={editDoc}>
                 Edit
             </button>

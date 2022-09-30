@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import parse from "html-react-parser";
 import docModel from "../../models/documents";
 
 const modules = {
@@ -73,7 +72,7 @@ function CreateEditor() {
                     theme="snow"
                     placeholder={"Write something awesome..."}
                     onChange={(event) => {
-                        changeText(parse(event).props.children);
+                        changeText(event);
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
