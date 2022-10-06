@@ -1,9 +1,9 @@
 import authModel from "../../models/auth";
 
-function Main() {
+function Main({token}) {
     return (
         <>
-            {authModel.token ? (
+            {token ? (
                 <>
                     <h3 className="title">Try to refresh on this page</h3>
                     <p>

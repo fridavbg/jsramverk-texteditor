@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import authModel from "../../models/auth";
 
-function Header() {
+function Header({token}) {
     const navigate = useNavigate();
     const Login = () => {
         navigate("/login");
@@ -23,7 +23,7 @@ function Header() {
             <button className="nav-btn" onClick={goHome}>
                 Home
             </button>
-            {authModel.token ? (
+            {token ? (
                 <>
                     <button className="nav-btn" onClick={seeDocs}>
                         Documents

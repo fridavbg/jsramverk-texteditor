@@ -14,9 +14,7 @@ const auth = {
 
         const result = await response.json();
 
-        if (result.data.token) {
-            this.token = result.data.token;
-        }
+        return result;
     },
     register: async function register(user) {
         const response = await fetch(`${this.baseUrl}/auth/login`, {
@@ -26,6 +24,11 @@ const auth = {
                 "content-type": "application/json",
             },
         });
+        const result = await response.json();
+
+        if (result.data.token) {
+            this.token = result.data.token;
+        }
     },
 };
 

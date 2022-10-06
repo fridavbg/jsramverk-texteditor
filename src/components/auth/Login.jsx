@@ -1,9 +1,9 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
-import authModel from "../../models/auth"
+import authModel from "../../models/auth";
 
-function Login() {
+function Login({setToken}) {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
 
@@ -17,12 +17,17 @@ function Login() {
 
     async function register() {
         await authModel.register(user);
+
+        navigate("/");
     }
 
     async function login() {
-        await authModel.login(user);
+        const loginResult = await authModel.login(user);
 
-        navigate("/");
+        if (loginResult.data.token) {
+            setToken(loginResult.data.token)
+            navigate("/");
+        }
     }
 
     return (

@@ -16,6 +16,8 @@ function App() {
     const [docs, setDocs] = useState([]);
     const [socket, setSocket] = useState(null);
     const [description, setDescription] = useState({});
+    const [token, setToken] = useState("");
+
 
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs();
@@ -51,10 +53,10 @@ function App() {
 
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
-            <Header />
+            <Header token={token}/>
             <Routes>
-            <Route path="/" element={<Main />} />
-                {authModel.token ? (
+            <Route path="/" element={<Main token={token}/>} />
+                {token ? (
                     <>
                         <Route path="/docs" element={<DocList docs={docs} />} />
                         <Route path="/create" element={<CreateEditor />} />
@@ -62,7 +64,7 @@ function App() {
                     </>
                 ) : (
                     <>
-                        <Route path="/login" element={<Login />} />
+                        <Route path="/login" element={<Login setToken={setToken}/>} />
                     </>
                 )}
             </Routes>
