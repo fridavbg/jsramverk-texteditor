@@ -17,8 +17,8 @@ function Login({ setToken }) {
     }
 
     async function register() {
-        setError("");
         setMessage("");
+        setError("");
         const registerResult = await authModel.register(user);
 
         console.log("register", registerResult.errors);
@@ -36,8 +36,8 @@ function Login({ setToken }) {
     }
 
     async function login() {
-        setError("");
         setMessage("");
+        setError("");
         const loginResult = await authModel.login(user);
 
         console.log("login:", loginResult.data);
@@ -60,8 +60,11 @@ function Login({ setToken }) {
         return (
             <div className="login-form">
                 <h1 className="title">Login / Registrera</h1>
-                <p class="err-msg">{error || message}</p>
-
+                <p class="err-msg">
+                    {error || message}
+                    <br />
+                    Please try again
+                </p>
                 <label>Email:</label>
                 <input type="email" name="email" onChange={changeHandler} />
                 <label>Password:</label>
