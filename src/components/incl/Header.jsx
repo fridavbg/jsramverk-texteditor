@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import authModel from "../../models/auth";
 
 function Header() {
     const navigate = useNavigate();
+    const Login = () => {
+        navigate("/login");
+    };
     const goHome = () => {
         navigate("/");
     };
@@ -16,9 +20,23 @@ function Header() {
     return (
         <div className="header">
             <h1>React Text Editor</h1>
-            <button className="nav-btn" onClick={goHome}>Main</button>
-            <button className="nav-btn" onClick={seeDocs}>Documents</button>
-            <button className="nav-btn" onClick={createDoc}>Create a document</button>
+            <button className="nav-btn" onClick={goHome}>
+                Home
+            </button>
+            {authModel.token ? (
+                <>
+                    <button className="nav-btn" onClick={seeDocs}>
+                        Documents
+                    </button>
+                    <button className="nav-btn" onClick={createDoc}>
+                        Create a document
+                    </button>
+                </>
+            ) : (
+                <button className="nav-btn" onClick={Login}>
+                    Login
+                </button>
+            )}
         </div>
     );
 }
