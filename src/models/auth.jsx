@@ -17,7 +17,7 @@ const auth = {
         return result;
     },
     register: async function register(user) {
-        const response = await fetch(`${this.baseUrl}/auth/login`, {
+        const response = await fetch(`${this.baseUrl}/auth/register`, {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -26,9 +26,7 @@ const auth = {
         });
         const result = await response.json();
 
-        if (result.data.token) {
-            this.token = result.data.token;
-        }
+        return result;
     },
 };
 

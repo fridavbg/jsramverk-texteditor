@@ -10,17 +10,14 @@ import CreateEditor from "./components/docs/CreateEditor";
 import UpdateDoc from "./components/docs/UpdateDoc";
 import Login from "./components/auth/Login";
 
-import authModel from "./models/auth";
-
 function App() {
     const [docs, setDocs] = useState([]);
     const [socket, setSocket] = useState(null);
     const [description, setDescription] = useState({});
     const [token, setToken] = useState("");
 
-
     async function fetchDocs() {
-        const allDocs = await docModel.getAllDocs();
+        const allDocs = await docModel.getAllDocs(token);
 
         // All Descriptions default value
         const descriptionsObject = allDocs.reduce((acc, doc) => {
@@ -37,7 +34,8 @@ function App() {
         (async () => {
             await fetchDocs();
         })();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]);
 
     // Socket -> localhost connection
     useEffect(() => {
@@ -53,9 +51,9 @@ function App() {
 
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
-            <Header token={token}/>
+            <Header token={token} />
             <Routes>
-            <Route path="/" element={<Main token={token}/>} />
+                <Route path="/" element={<Main token={token} />} />
                 {token ? (
                     <>
                         <Route path="/docs" element={<DocList docs={docs} />} />
@@ -64,7 +62,10 @@ function App() {
                     </>
                 ) : (
                     <>
-                        <Route path="/login" element={<Login setToken={setToken}/>} />
+                        <Route
+                            path="/login"
+                            element={<Login setToken={setToken} />}
+                        />
                     </>
                 )}
             </Routes>

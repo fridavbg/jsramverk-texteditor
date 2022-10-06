@@ -3,8 +3,12 @@ const docModel = {
         ? "http://localhost:1337"
         : "https://jsramverk-editor-frpe21.azurewebsites.net",
     baseName: window.location.href.includes("localhost") ? "/" : "/~frpe21/editor/",
-    getAllDocs: async function getAllDocs() {
-        const response = await fetch(`${docModel.baseUrl}/docs`);
+    getAllDocs: async function getAllDocs(token) {
+        const response = await fetch(`${docModel.baseUrl}/docs`, {
+            headers: {
+                "x-access-token": token
+            }
+        });
 
         const docs = await response.json();
         return docs.data;
@@ -35,6 +39,8 @@ const docModel = {
         );
 
         const result = await response.json();
+
+        return result;
     },
 };
 

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import authModel from "../../models/auth";
 
 function Header({token}) {
     const navigate = useNavigate();

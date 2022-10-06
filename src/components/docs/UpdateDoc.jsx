@@ -69,7 +69,7 @@ function UpdateDoc() {
         }
 
         await docModel.updateDoc(newDoc);
-
+        // window.location.reload();
         navigate("/");
     }
 

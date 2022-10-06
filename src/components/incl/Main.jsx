@@ -1,4 +1,3 @@
-import authModel from "../../models/auth";
 
 function Main({token}) {
     return (
