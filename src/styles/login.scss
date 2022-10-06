@@ -11,3 +11,25 @@
     padding: 0.5em;
     margin: 0.5em;
 }
+
+.register-btn {
+    font-size: 18px;
+}
+
+.register-btn:hover {
+    box-shadow: 0px 0px 6px 6px rgb(106, 106, 238);
+}
+
+.login-btn {
+    font-size: 18px;
+}
+
+.login-btn:hover {
+    box-shadow: 0px 0px 6px 6px rgb(86, 221, 86);
+}
+
+.err-msg {
+    padding: 2em;
+    font-size: 18px;
+    border: 1px solid red;
+}
