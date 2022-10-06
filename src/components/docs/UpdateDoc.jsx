@@ -2,7 +2,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import parse from "html-react-parser";
 import { io } from "socket.io-client";
 import docModel from "../../models/documents";
 

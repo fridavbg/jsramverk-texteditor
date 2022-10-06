@@ -1,8 +1,10 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 import authModel from "../../models/auth"
 
 function Login() {
+    const navigate = useNavigate();
     const [user, setUser] = useState({});
 
     function changeHandler(event) {
@@ -19,6 +21,8 @@ function Login() {
 
     async function login() {
         await authModel.login(user);
+
+        navigate("/");
     }
 
     return (
