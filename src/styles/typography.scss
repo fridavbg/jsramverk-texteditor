@@ -8,7 +8,7 @@
 }
 
 .title {
-font: 32px $font-stack;
+    font: 32px $font-stack;
 }
 
 .title-input {
@@ -27,5 +27,10 @@ font: 32px $font-stack;
 
 q {
     margin-top: 3em;
-    font: 32px $font-stack;
+    font: 22px $font-stack;
+}
+
+.quote-wrapper p {
+    margin-left: 19em;
+    font: 16px $font-stack;
 }
