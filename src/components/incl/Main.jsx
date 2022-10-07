@@ -1,14 +1,15 @@
-
-function Main({token}) {
+function Main({ token }) {
     return (
         <>
             {token ? (
                 <>
-                    <h3 className="title">Try to refresh on this page</h3>
-                    <p>
-                        If you have added or updated a document. Please refresh
-                        this page now
-                    </p>
+                    <div className="quote-wrapper">
+                        <q>
+                            As a writer, you should not judge, you should
+                            understand.
+                        </q>
+                        <p> -- Ernest Hemingway</p>
+                    </div>
                 </>
             ) : (
                 <>
