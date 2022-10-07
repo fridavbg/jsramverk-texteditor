@@ -1,6 +1,6 @@
 import "./styles/app.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
@@ -29,6 +29,13 @@ function App() {
         setDescription(descriptionsObject);
         setDocs(allDocs);
     }
+
+    useEffect(() => {
+        (async () => {
+            await fetchDocs();
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [docs]);
 
     useEffect(() => {
         (async () => {

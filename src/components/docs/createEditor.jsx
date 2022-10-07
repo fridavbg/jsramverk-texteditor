@@ -52,7 +52,7 @@ function CreateEditor() {
         }
         await docModel.createDoc(newDoc);
 
-        navigate('/');
+        navigate('/docs');
     }
 
     return (
