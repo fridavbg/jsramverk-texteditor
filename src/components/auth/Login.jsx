@@ -62,8 +62,6 @@ function Login({ setToken }) {
                 <h1 className="title">Login / Registrera</h1>
                 <p class="err-msg">
                     {error || message}
-                    <br />
-                    Please try again
                 </p>
                 <label>Email:</label>
                 <input type="email" name="email" onChange={changeHandler} />
