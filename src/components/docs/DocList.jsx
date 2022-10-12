@@ -1,6 +1,6 @@
 import DocCard from "./DocCard";
 
-function DocList({ docs}) {
+function DocList({docs}) {
     const docCards = docs.map((doc, index) => {
         return (
             <DocCard

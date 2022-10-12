@@ -2,16 +2,25 @@ const docModel = {
     baseUrl: window.location.href.includes("localhost")
         ? "http://localhost:1337"
         : "https://jsramverk-editor-frpe21.azurewebsites.net",
-    baseName: window.location.href.includes("localhost") ? "/" : "/~frpe21/editor/",
+    baseName: window.location.href.includes("localhost")
+        ? "/"
+        : "/~frpe21/editor/",
     getAllDocs: async function getAllDocs(token) {
-        const response = await fetch(`${docModel.baseUrl}/docs`, {
+        const response = await fetch(`${docModel.baseUrl}/graphql`, {
+            method: "POST",
             headers: {
-                "x-access-token": token
-            }
+                "x-access-token": token,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify({
+                query: "{ documents { _id title description } }",
+            }),
         });
 
-        const docs = await response.json();
-        return docs.data;
+        const result = await response.json();
+
+        return result.data.documents;
     },
     createDoc: async function createDoc(newDoc) {
         const response = await fetch(`${docModel.baseUrl}/docs/create`, {
