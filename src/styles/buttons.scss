@@ -20,6 +20,17 @@
     box-shadow: 0px 0px 4px 4px $box-shadow-edit;
 }
 
+.invite-btn {
+    margin: 1em;
+    padding: 0.5em;
+    font-size: medium;
+    box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+}
+
+.invite-btn:hover {
+    box-shadow: 0px 0px 4px 4px $box-shadow-edit;
+}
+
 .pdf-btn {
     margin: 1em;
     padding: 0.5em;
@@ -39,5 +50,16 @@
 }
 
 .create-btn:hover {
+    box-shadow: 0px 0px 4px 4px $box-shadow-create;
+}
+
+.send-btn {
+    margin: 0.4em;
+    padding: 0.5em;
+    font-size: medium;
+    box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+}
+
+.send-btn:hover {
     box-shadow: 0px 0px 4px 4px $box-shadow-create;
 }

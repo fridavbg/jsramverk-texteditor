@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { pdfExporter } from "quill-to-pdf";
+import { saveAs } from "file-saver";
 import docModel from "../../models/documents";
 
 const modules = {
@@ -55,10 +57,19 @@ function CreateEditor() {
         navigate('/docs');
     }
 
+    async function downloadPDF() {
+        const delta = editorRef.current.editor.getContents();
+        const blob = await pdfExporter.generatePdf(delta);
+        saveAs(blob, `${newDoc.title}.pdf`);
+    }
+
     return (
         <>
             <button className="create-btn" onClick={saveText}>
                 Save
+            </button>
+            <button className="pdf-btn" onClick={downloadPDF}>
+                Download as PDF
             </button>
             <div>
                 <input

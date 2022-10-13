@@ -1,15 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
+import { useState } from "react";
 
 function DocCard({ doc, index }) {
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [showForm, setShowForm] = useState(false);
+
     const editDoc = () => {
         navigate("/edit", {
             replace: true,
             state: {
-                doc: doc
+                doc: doc,
             },
         });
+    };
+
+    const emailForm = () => {
+        setShowForm(!showForm);
+    };
+
+    const sendInvite = (event) => {
+        event.preventDefault();
+        console.log("Send invite");
     };
 
     return (
@@ -20,6 +33,16 @@ function DocCard({ doc, index }) {
             <button className="edit-btn" onClick={editDoc}>
                 Edit
             </button>
+            <button className="invite-btn" onClick={emailForm}>
+                Invite someone to join
+            </button>
+            {showForm && (
+                <form className="email-form">
+                    <label className="label">Email:</label>
+                    <input text="email" />
+                    <button className="send-btn" onClick={sendInvite}>Send</button>
+                </form>
+            )}
         </div>
     );
 }
