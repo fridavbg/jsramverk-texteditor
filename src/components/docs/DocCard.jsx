@@ -12,10 +12,6 @@ function DocCard({ doc, index }) {
         });
     };
 
-    const downloadPDF = () => {
-        console.log(doc._id);
-    }
-
     return (
         <div className="card">
             {/* <p>{doc._id}</p> */}
@@ -23,9 +19,6 @@ function DocCard({ doc, index }) {
             <p>{parse(doc.description)}</p>
             <button className="edit-btn" onClick={editDoc}>
                 Edit
-            </button>
-            <button className="pdf-btn" onClick={downloadPDF}>
-                Download as PDF
             </button>
         </div>
     );

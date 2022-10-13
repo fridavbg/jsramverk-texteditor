@@ -2,6 +2,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { pdfExporter } from "quill-to-pdf";
+import { saveAs } from "file-saver";
 import { io } from "socket.io-client";
 import docModel from "../../models/documents";
 
@@ -82,7 +84,7 @@ function UpdateDoc() {
                     title: newDoc.title,
                     description: data.description,
                 };
-                setNewDoc({ ...newDoc, ...newObject })
+                setNewDoc({ ...newDoc, ...newObject });
                 setValue(data.description);
             });
         }
@@ -102,16 +104,23 @@ function UpdateDoc() {
             };
             socket.emit("update", updatedDoc);
             setValue(text);
-            setNewDoc({ ...newDoc, ...newObject })
-            // console.log("updateState func: ");
-            // console.log(newDoc)
+            setNewDoc({ ...newDoc, ...newObject });
         }
     };
+
+    async function downloadPDF() {
+        const delta = editorRef.current.editor.getContents();
+        const blob = await pdfExporter.generatePdf(delta);
+        saveAs(blob, `${newDoc.title}.pdf`);
+    }
 
     return (
         <>
             <button className="create-btn" onClick={saveText}>
                 Update
+            </button>
+            <button className="pdf-btn" onClick={downloadPDF}>
+                Download as PDF
             </button>
             <div>
                 <input
