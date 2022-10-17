@@ -41,6 +41,11 @@ function CreateEditor() {
         setNewDoc({ ...newDoc, ...newObject });
     }
 
+    function changeComment(event) {
+        newObject["comment"] = event;
+        setNewDoc({ ...newDoc, ...newObject });
+    }
+
     async function saveText() {
         if (
             newDoc.title === "" ||
@@ -54,7 +59,7 @@ function CreateEditor() {
         }
         await docModel.createDoc(newDoc);
 
-        navigate('/docs');
+        navigate("/docs");
     }
 
     async function downloadPDF() {

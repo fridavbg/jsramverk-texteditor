@@ -22,6 +22,7 @@ function DocCard({ doc, index }) {
 
     const sendInvite = (event) => {
         event.preventDefault();
+        setShowForm(!showForm);
         console.log("Send invite");
     };
 

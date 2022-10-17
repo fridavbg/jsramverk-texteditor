@@ -1,6 +1,6 @@
 import "./styles/app.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";

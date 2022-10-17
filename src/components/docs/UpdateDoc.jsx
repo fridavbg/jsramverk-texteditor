@@ -1,6 +1,8 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
+import "quill-comment";
+import "quill-comment/quill.comment.css";
 import "react-quill/dist/quill.snow.css";
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
@@ -20,10 +22,43 @@ const modules = {
         [{ color: [] }, { background: [] }],
         [{ font: [] }],
         [{ align: [] }],
-
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
         ["clean"],
+        ["contain"],
+        ["comments-toggle"], // comment color on/off
+        ["comments-add"], // comment add
     ],
+    comment: {
+        enabled: true,
+        commentAuthorId: 123,
+        commentAddOn: "Author Name", // any additional info needed
+        color: "yellow", // comment background color in the text
+        commentAddClick: commentAddClick, // get called when `ADD COMMENT` btn on options bar is clicked
+        commentsClick: commentsClick, // get called when you click `COMMENTS` btn on options bar for you to do additional things beside color on/off. Color on/off is already done before the callback is called.
+        commentTimestamp: commentServerTimestamp,
+    },
 };
+
+function commentAddClick(callback) {
+    // UX works to get comment from user, like showing modal dialog
+    //$('#inputCommentModal').modal('show');
+    // But after whatever UX works, call the `callback` with comment to pass back comment
+    // callback will be null when nth is selected
+    callback(modules.comment);
+}
+
+function commentServerTimestamp() {
+    // call from server or local time. But must return promise with UNIX Epoch timestamp resolved (like 1507617041)
+    return new Promise((resolve, reject) => {
+        let currentTimestamp = Math.round(new Date().getTime() / 1000);
+
+        resolve(currentTimestamp);
+    });
+}
+
+function commentsClick() {
+    console.log("comments btn callback");
+}
 
 function UpdateDoc() {
     const location = useLocation();
