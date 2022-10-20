@@ -39,12 +39,16 @@ const modules = {
     },
 };
 
+let showCommentBox = false;
+
 function commentAddClick(callback) {
     // UX works to get comment from user, like showing modal dialog
     //$('#inputCommentModal').modal('show');
     // But after whatever UX works, call the `callback` with comment to pass back comment
     // callback will be null when nth is selected
-    callback(modules.comment);
+   // callback(modules.comment);
+    console.log("open txt box");
+    showCommentBox = true;
 }
 
 function commentServerTimestamp() {
@@ -73,6 +77,7 @@ function UpdateDoc() {
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
+
 
     let newObject = {};
 
@@ -149,6 +154,39 @@ function UpdateDoc() {
         saveAs(blob, `${newDoc.title}.pdf`);
     }
 
+    if (showCommentBox) {
+        return <>
+        <button className="create-btn" onClick={saveText}>
+            Update
+        </button>
+        <button className="pdf-btn" onClick={downloadPDF}>
+            Download as PDF
+        </button>
+            <div>
+            <input
+                value="Comment"
+                className="comment-input"
+                name="comment"
+            />
+            <input
+                value={newDoc.title}
+                className="title-input"
+                onChange={changeTitle}
+                name="title"
+            />
+            <ReactQuill
+                className="editor"
+                name="description"
+                theme="snow"
+                value={value}
+                onChange={updateState}
+                modules={modules}
+                style={{ height: "3in", margin: "1em", flex: "1" }}
+                ref={editorRef}
+            />
+        </div>
+    </>
+    }
     return (
         <>
             <button className="create-btn" onClick={saveText}>
