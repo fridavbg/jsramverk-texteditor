@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import { useState } from "react";
 
+import emailModel from "../../models/mail";
+
+
 function DocCard({ doc, index }) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -20,10 +23,14 @@ function DocCard({ doc, index }) {
         setShowForm(!showForm);
     };
 
-    const sendInvite = (event) => {
+    function changeEmail(event) {
+        setEmail(event.target.value);
+    }
+
+    async function sendInvite(event) {
         event.preventDefault();
-        setShowForm(!showForm);
-        console.log("Send invite");
+        // setShowForm(!showForm);
+        await emailModel.sendMail(email);
     };
 
     return (
@@ -40,7 +47,9 @@ function DocCard({ doc, index }) {
             {showForm && (
                 <form className="email-form">
                     <label className="label">Email:</label>
-                    <input text="email" />
+                    <input text="email" name="email" onChange={changeEmail}
+                    required
+                    />
                     <button className="send-btn" onClick={sendInvite}>Send</button>
                 </form>
             )}
