@@ -29,8 +29,10 @@ function DocCard({ doc, index }) {
 
     async function sendInvite(event) {
         event.preventDefault();
-        // setShowForm(!showForm);
-        await emailModel.sendMail(email);
+        setShowForm(!showForm);
+        let sent = await emailModel.sendMail(email);
+        console.log("DocCard:");
+        console.log(sent);
     };
 
     return (
@@ -47,7 +49,7 @@ function DocCard({ doc, index }) {
             {showForm && (
                 <form className="email-form">
                     <label className="label">Email:</label>
-                    <input text="email" name="email" onChange={changeEmail}
+                    <input type="email" text="email" name="email" onChange={changeEmail}
                     required
                     />
                     <button className="send-btn" onClick={sendInvite}>Send</button>
