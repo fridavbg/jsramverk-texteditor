@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { pdfExporter } from "quill-to-pdf";
-import { saveAs } from "file-saver";
+import parse from "html-react-parser";
 import docModel from "../../models/documents";
 
 const modules = {
@@ -41,11 +40,6 @@ function CreateEditor() {
         setNewDoc({ ...newDoc, ...newObject });
     }
 
-    function changeComment(event) {
-        newObject["comment"] = event;
-        setNewDoc({ ...newDoc, ...newObject });
-    }
-
     async function saveText() {
         if (
             newDoc.title === "" ||
@@ -59,22 +53,13 @@ function CreateEditor() {
         }
         await docModel.createDoc(newDoc);
 
-        navigate("/docs");
-    }
-
-    async function downloadPDF() {
-        const delta = editorRef.current.editor.getContents();
-        const blob = await pdfExporter.generatePdf(delta);
-        saveAs(blob, `${newDoc.title}.pdf`);
+        navigate('/');
     }
 
     return (
         <>
             <button className="create-btn" onClick={saveText}>
                 Save
-            </button>
-            <button className="pdf-btn" onClick={downloadPDF}>
-                Download as PDF
             </button>
             <div>
                 <input
@@ -88,7 +73,7 @@ function CreateEditor() {
                     theme="snow"
                     placeholder={"Write something awesome..."}
                     onChange={(event) => {
-                        changeText(event);
+                        changeText(parse(event).props.children);
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
