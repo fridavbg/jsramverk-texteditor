@@ -6,6 +6,7 @@ import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
 import { io } from "socket.io-client";
 import docModel from "../../models/documents";
+import CommentBox from "../docs/CommentBox";
 
 const modules = {
     toolbar: [
@@ -38,9 +39,7 @@ function UpdateDoc() {
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
-    const [newComment, setNewComment] = useState({});
     const [showCommentBox, setShowCommentBox] = useState(false);
-    const [commentPosition, setCommentPosition] = useState(null);
 
     let newObject = {};
 
@@ -60,21 +59,6 @@ function UpdateDoc() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function changeComment(event) {
-        newObject["comment"] = event.target.value;
-        newObject["written by"] = "fperssontech@gmail.com"
-        setNewComment({...newComment, ...newObject });
-    }
-
-    async function addComment(event) {
-        event.preventDefault();
-        setCommentPosition(editorRef.current.editor.getSelection());
-        newObject["range"] = commentPosition;
-        setNewComment({ ...newComment, ...newObject });
-        setShowCommentBox(!showCommentBox);
-        console.log(newComment);
-        console.log(commentPosition);
-    };
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
@@ -156,14 +140,10 @@ function UpdateDoc() {
                     name="title"
                 />
                 {showCommentBox && (
-                <form className="comment-form">
-                    <label className="label">Comment:</label>
-                    <input type="comment" text="comment" name="comment" onChange={changeComment}
-                    required
-                    />
-                    <button className="send-btn" onClick={addComment} >Add comment</button>
-                </form>
-            )}
+                    <CommentBox editorRef={editorRef}
+                    setShowCommentBox={setShowCommentBox}
+                    showCommentBox={showCommentBox} />
+                )}
                 <ReactQuill
                     className="editor"
                     name="description"

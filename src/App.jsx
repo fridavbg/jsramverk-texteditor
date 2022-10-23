@@ -1,8 +1,6 @@
 import "./styles/app.scss";
-import { useLocation } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
 import Main from "./components/incl/Main";
@@ -13,7 +11,6 @@ import Login from "./components/auth/Login";
 
 function App() {
     const [docs, setDocs] = useState([]);
-    const [socket, setSocket] = useState(null);
     const [description, setDescription] = useState({});
     const [token, setToken] = useState("");
     
@@ -37,26 +34,7 @@ function App() {
             await fetchDocs();
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            await fetchDocs();
-        })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
-
-    // Socket -> localhost connection
-    useEffect(() => {
-        setSocket(io(docModel.baseUrl));
-        return () => {
-            if (socket) {
-                socket.disconnect();
-                console.log("Disconnected");
-            }
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [description]);
 
     return (
         <BrowserRouter className="App" basename={docModel.baseName}>
