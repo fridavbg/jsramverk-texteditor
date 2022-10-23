@@ -1,8 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
-import "quill-comment";
-import "quill-comment/quill.comment.css";
 import "react-quill/dist/quill.snow.css";
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
@@ -24,45 +22,8 @@ const modules = {
         [{ align: [] }],
         [{ color: [] }, { background: [] }], // dropdown with defaults from theme
         ["clean"],
-        ["contain"],
-        ["comments-toggle"], // comment color on/off
-        ["comments-add"], // comment add
     ],
-    comment: {
-        enabled: true,
-        commentAuthorId: 123,
-        commentAddOn: "Author Name", // any additional info needed
-        color: "yellow", // comment background color in the text
-        commentAddClick: commentAddClick, // get called when `ADD COMMENT` btn on options bar is clicked
-        commentsClick: commentsClick, // get called when you click `COMMENTS` btn on options bar for you to do additional things beside color on/off. Color on/off is already done before the callback is called.
-        commentTimestamp: commentServerTimestamp,
-    },
 };
-
-let showCommentBox = false;
-
-function commentAddClick(callback) {
-    // UX works to get comment from user, like showing modal dialog
-    //$('#inputCommentModal').modal('show');
-    // But after whatever UX works, call the `callback` with comment to pass back comment
-    // callback will be null when nth is selected
-   // callback(modules.comment);
-    console.log("open txt box");
-    showCommentBox = true;
-}
-
-function commentServerTimestamp() {
-    // call from server or local time. But must return promise with UNIX Epoch timestamp resolved (like 1507617041)
-    return new Promise((resolve, reject) => {
-        let currentTimestamp = Math.round(new Date().getTime() / 1000);
-
-        resolve(currentTimestamp);
-    });
-}
-
-function commentsClick() {
-    console.log("comments btn callback");
-}
 
 function UpdateDoc() {
     const location = useLocation();
@@ -77,9 +38,16 @@ function UpdateDoc() {
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
+    const [comment, setComment] = useState("");
+    const [showCommentBox, setShowCommentBox] = useState(false);
 
 
     let newObject = {};
+
+    const commentInput = () => {
+        setShowCommentBox(!showCommentBox);
+    };
+
 
     // create socket & clear
     useEffect(() => {
@@ -92,6 +60,15 @@ function UpdateDoc() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    function changeComment(event) {
+        setComment(event.target.value);
+    }
+
+    async function addComment(event) {
+        event.preventDefault();
+        console.log("Comment");
+    };
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
@@ -154,43 +131,13 @@ function UpdateDoc() {
         saveAs(blob, `${newDoc.title}.pdf`);
     }
 
-    if (showCommentBox) {
-        return <>
-        <button className="create-btn" onClick={saveText}>
-            Update
-        </button>
-        <button className="pdf-btn" onClick={downloadPDF}>
-            Download as PDF
-        </button>
-            <div>
-            <input
-                value="Comment"
-                className="comment-input"
-                name="comment"
-            />
-            <input
-                value={newDoc.title}
-                className="title-input"
-                onChange={changeTitle}
-                name="title"
-            />
-            <ReactQuill
-                className="editor"
-                name="description"
-                theme="snow"
-                value={value}
-                onChange={updateState}
-                modules={modules}
-                style={{ height: "3in", margin: "1em", flex: "1" }}
-                ref={editorRef}
-            />
-        </div>
-    </>
-    }
     return (
         <>
             <button className="create-btn" onClick={saveText}>
                 Update
+            </button>
+            <button className="commentBox-btn" onClick={commentInput}>
+                Add a comment
             </button>
             <button className="pdf-btn" onClick={downloadPDF}>
                 Download as PDF
@@ -202,6 +149,15 @@ function UpdateDoc() {
                     onChange={changeTitle}
                     name="title"
                 />
+                {showCommentBox && (
+                <form className="comment-form">
+                    <label className="label">Comment:</label>
+                    <input type="comment" text="comment" name="comment" onChange={changeComment}
+                    required
+                    />
+                    <button className="send-btn" onClick={addComment} >Add comment</button>
+                </form>
+            )}
                 <ReactQuill
                     className="editor"
                     name="description"

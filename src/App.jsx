@@ -36,7 +36,7 @@ function App() {
             await fetchDocs();
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [docs]);
+    }, []);
 
     useEffect(() => {
         (async () => {
