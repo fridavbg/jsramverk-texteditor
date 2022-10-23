@@ -11,19 +11,19 @@ function CommentBox({ editorRef, setShowCommentBox, showCommentBox }) {
 
     function changeComment(event) {
         newObject["comment"] = event.target.value;
-        newObject["written by"] = "fperssontech@gmail.com"
         setNewComment({...newComment, ...newObject });
     }
 
     async function addComment(event) {
         event.preventDefault();
         let range = unprivilegedEditor.getSelection();
-        if (range === null) {
+        if (range === null || newComment.comment === "") {
             alert("Did you forget to mark some text or add some text for the comment?");
         } else {
             newComment["range"] = range;
             console.log("newComment:", newComment);
             setShowCommentBox(!showCommentBox);
+            // SAVE TO DATABASE
         }
     };
 
