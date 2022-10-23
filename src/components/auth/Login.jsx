@@ -21,7 +21,7 @@ function Login({ setToken }) {
         setError("");
         const registerResult = await authModel.register(user);
 
-        console.log("register", registerResult.errors);
+        // console.log("register", registerResult.errors);
 
         if (registerResult.errors !== undefined) {
             setError(registerResult.errors.message);
@@ -39,7 +39,6 @@ function Login({ setToken }) {
         setMessage("");
         setError("");
         const loginResult = await authModel.login(user);
-
         console.log("login:", loginResult.data);
 
         if (loginResult.errors !== undefined) {

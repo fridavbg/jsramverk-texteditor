@@ -1,4 +1,5 @@
 import "./styles/app.scss";
+import { useLocation } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
@@ -15,7 +16,7 @@ function App() {
     const [socket, setSocket] = useState(null);
     const [description, setDescription] = useState({});
     const [token, setToken] = useState("");
-
+    
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs(token);
         console.log("AllDocs:", allDocs);
@@ -72,7 +73,8 @@ function App() {
                     <>
                         <Route
                             path="/login"
-                            element={<Login setToken={setToken} />}
+                                element={<Login
+                                    setToken={setToken} />}
                         />
                     </>
                 )}

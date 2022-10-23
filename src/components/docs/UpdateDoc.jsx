@@ -38,16 +38,15 @@ function UpdateDoc() {
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
-    const [comment, setComment] = useState("");
+    const [newComment, setNewComment] = useState({});
     const [showCommentBox, setShowCommentBox] = useState(false);
-
+    const [commentPosition, setCommentPosition] = useState(null);
 
     let newObject = {};
 
     const commentInput = () => {
         setShowCommentBox(!showCommentBox);
     };
-
 
     // create socket & clear
     useEffect(() => {
@@ -62,12 +61,19 @@ function UpdateDoc() {
     }, []);
 
     function changeComment(event) {
-        setComment(event.target.value);
+        newObject["comment"] = event.target.value;
+        newObject["written by"] = "fperssontech@gmail.com"
+        setNewComment({...newComment, ...newObject });
     }
 
     async function addComment(event) {
         event.preventDefault();
-        console.log("Comment");
+        setCommentPosition(editorRef.current.editor.getSelection());
+        newObject["range"] = commentPosition;
+        setNewComment({ ...newComment, ...newObject });
+        setShowCommentBox(!showCommentBox);
+        console.log(newComment);
+        console.log(commentPosition);
     };
 
     function changeTitle(event) {
