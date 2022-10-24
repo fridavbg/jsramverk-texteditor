@@ -14,7 +14,7 @@ const docModel = {
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                query: "{ documents { _id title description } }",
+                query: "{ documents { _id title description comments } }",
             }),
         });
 
@@ -46,7 +46,6 @@ const docModel = {
                 method: "POST",
             }
         );
-
         const result = await response.json();
 
         return result;

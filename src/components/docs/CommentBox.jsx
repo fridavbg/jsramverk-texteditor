@@ -1,6 +1,7 @@
 import { useState } from "react";
+import docModel from "../../models/documents";
 
-function CommentBox({ editorRef, setShowCommentBox, showCommentBox }) {
+function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showCommentBox }) {
     const unprivilegedEditor = editorRef.current.unprivilegedEditor;
     const [newComment, setNewComment] = useState({
         comment: "",
@@ -21,9 +22,9 @@ function CommentBox({ editorRef, setShowCommentBox, showCommentBox }) {
             alert("Did you forget to mark some text or add some text for the comment?");
         } else {
             newComment["range"] = range;
-            console.log("newComment:", newComment);
+            console.log("CommentBox:", newComment);
+            addCommentToDoc(newComment);
             setShowCommentBox(!showCommentBox);
-            // SAVE TO DATABASE
         }
     };
 

@@ -11,12 +11,13 @@ function DocCard({ doc, index }) {
     const [showForm, setShowForm] = useState(false);
 
     const editDoc = () => {
-        navigate("/edit", {
-            replace: true,
-            state: {
-                doc: doc,
-            },
-        });
+        console.log("DocCard:", doc);
+        // navigate("/edit", {
+        //     replace: true,
+        //     state: {
+        //         doc: doc,
+        //     },
+        // });
     };
 
     const emailForm = () => {

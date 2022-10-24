@@ -34,7 +34,26 @@ function UpdateDoc() {
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
+        comments: []
     });
+
+    const addComment = async (comment) => {
+        // add the comment to the newDoc state, then...
+        console.log("updateDoc:", comment);
+        setNewDoc(oldDoc => {
+
+            return {
+                ...oldDoc,
+                comments: [
+                    ...oldDoc.comments,
+                    comment
+                ]
+            }
+        })
+        console.log("updateDoc:", newDoc);
+
+        await docModel.updateDoc(newDoc);
+    }
 
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
@@ -90,6 +109,7 @@ function UpdateDoc() {
                     _id: newDoc._id,
                     title: newDoc.title,
                     description: data.description,
+                    comments: data.comments
                 };
                 setNewDoc({ ...newDoc, ...newObject });
                 setValue(data.description);
@@ -103,11 +123,13 @@ function UpdateDoc() {
             let updatedDoc = {
                 _id: newDoc._id,
                 description: text,
+                comments: newDoc.comments
             };
             let newObject = {
                 _id: newDoc._id,
                 title: newDoc.title,
                 description: text,
+                comments: newDoc.comments
             };
             socket.emit("update", updatedDoc);
             setValue(text);
@@ -142,18 +164,24 @@ function UpdateDoc() {
                 {showCommentBox && (
                     <CommentBox editorRef={editorRef}
                     setShowCommentBox={setShowCommentBox}
-                    showCommentBox={showCommentBox} />
+                        showCommentBox={showCommentBox}
+                    addCommentToDoc = {addComment} />
                 )}
-                <ReactQuill
-                    className="editor"
-                    name="description"
-                    theme="snow"
-                    value={value}
-                    onChange={updateState}
-                    modules={modules}
-                    style={{ height: "3in", margin: "1em", flex: "1" }}
-                    ref={editorRef}
-                />
+                <div className="neg-margin">
+                    <ReactQuill
+                        className="editor"
+                        name="description"
+                        theme="snow"
+                        value={value}
+                        onChange={updateState}
+                        modules={modules}
+                        style={{ height: "3in", margin: "1em", flex: "1" }}
+                        ref={editorRef}
+                    />
+                    </div>
+                <div>
+                    <p>HI</p>
+                </div>
             </div>
         </>
     );
