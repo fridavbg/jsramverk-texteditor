@@ -22,7 +22,7 @@ function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showComment
             alert("Did you forget to mark some text or add some text for the comment?");
         } else {
             newComment["range"] = range;
-            console.log("CommentBox:", newComment);
+            // console.log("CommentBox:", newComment);
             addCommentToDoc(newComment);
             setShowCommentBox(!showCommentBox);
         }

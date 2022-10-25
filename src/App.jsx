@@ -43,7 +43,7 @@ function App() {
                 <Route path="/" element={<Main token={token} />} />
                 {token ? (
                     <>
-                        <Route path="/docs" element={<DocList docs={docs} />} />
+                        <Route path="/docs" element={<DocList docs={docs} fetchDocs={fetchDocs} />} />
                         <Route path="/create" element={<CreateEditor />} />
                         <Route path="/edit" element={<UpdateDoc />} />
                     </>

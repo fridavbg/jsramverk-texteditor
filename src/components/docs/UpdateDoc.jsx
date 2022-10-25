@@ -37,24 +37,6 @@ function UpdateDoc() {
         comments: location.state.comments
     });
 
-    const addComment = async (comment) => {
-        // add the comment to the newDoc state, then...
-        console.log("updateDoc:", comment);
-        setNewDoc(oldDoc => {
-
-            return {
-                ...oldDoc,
-                comments: [
-                    ...oldDoc.comments,
-                    comment
-                ]
-            }
-        })
-        console.log("updateDoc:", newDoc);
-
-        await docModel.updateDoc(newDoc);
-    }
-
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
@@ -141,6 +123,23 @@ function UpdateDoc() {
         const delta = editorRef.current.editor.getContents();
         const blob = await pdfExporter.generatePdf(delta);
         saveAs(blob, `${newDoc.title}.pdf`);
+    }
+
+    const addComment = async (comment) => {
+        // add the comment to the newDoc state, then...
+        console.log("Comment to be added:", comment);
+        setNewDoc(oldDoc => {
+            return {
+                ...oldDoc,
+                comments: [
+                    ...oldDoc.comments,
+                    comment
+                ]
+            }
+        })
+        console.log("After newDoc addComment:", newDoc);
+
+        // await docModel.updateDoc(newDoc);
     }
 
     return (

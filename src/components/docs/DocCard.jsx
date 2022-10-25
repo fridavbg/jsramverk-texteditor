@@ -12,12 +12,12 @@ function DocCard({ doc, index }) {
 
     const editDoc = () => {
         console.log("DocCard:", doc);
-        // navigate("/edit", {
-        //     replace: true,
-        //     state: {
-        //         doc: doc,
-        //     },
-        // });
+        navigate("/edit", {
+            replace: true,
+            state: {
+                doc: doc,
+            },
+        });
     };
 
     const emailForm = () => {
