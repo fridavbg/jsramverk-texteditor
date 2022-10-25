@@ -23,7 +23,7 @@ function DocList({ docs, fetchDocs }) {
     if (docCards.length > 0) {
         return <div className="list">{docCards}</div>;
     } else {
-        return <p>No documents are in the database</p>;
+        return <p className="notification">No documents are in the database</p>;
     }
 }
 

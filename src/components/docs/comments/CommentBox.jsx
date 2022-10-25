@@ -1,5 +1,4 @@
 import { useState } from "react";
-import docModel from "../../models/documents";
 
 function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showCommentBox }) {
     const unprivilegedEditor = editorRef.current.unprivilegedEditor;
@@ -31,7 +30,9 @@ function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showComment
     return (
         <>
             <form className="comment-form">
-                    <label className="label">Comment:</label>
+            <h3>Add your comment and mark some text in the editor</h3>
+                <label
+                    className="label">Comment:</label>
                     <input type="comment" text="comment" name="comment" onChange={changeComment}
                     required />
                     <button className="send-btn" onClick={addComment} >Submit comment</button>

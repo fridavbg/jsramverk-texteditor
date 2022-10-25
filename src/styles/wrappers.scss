@@ -30,6 +30,15 @@
     padding: 1em;
 }
 
-.neg-margin {
+.editor-comments-wrapper {
+    display: flex;
+}
+
+.editor-wrapper {
     margin-bottom: 5em;
+    width: 80%;
+}
+
+.comments-wrapper {
+    width: 20%;
 }

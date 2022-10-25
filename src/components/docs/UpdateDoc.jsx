@@ -6,7 +6,9 @@ import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
 import { io } from "socket.io-client";
 import docModel from "../../models/documents";
-import CommentBox from "../docs/CommentBox";
+import CommentBox from "../docs/comments/CommentBox";
+import CommentList from "../docs/comments/CommentList";
+
 
 const modules = {
     toolbar: [
@@ -34,15 +36,14 @@ function UpdateDoc() {
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
-        comments: location.state.doc.comments
+        comments: location.state.doc.comments,
     });
-
-    console.log("currentDoc", newDoc);
 
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
+    const [showCommentSection, setShowCommentSection] = useState(false);
 
     let newObject = {};
 
@@ -50,7 +51,13 @@ function UpdateDoc() {
         setShowCommentBox(!showCommentBox);
     };
 
-    // create socket & clear
+    const commentSection = () => {
+        if (newDoc.comments.length > 0) {
+            setShowCommentSection(true);
+        }
+        
+    };
+
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
         return () => {
@@ -61,7 +68,6 @@ function UpdateDoc() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
@@ -93,7 +99,7 @@ function UpdateDoc() {
                     _id: newDoc._id,
                     title: newDoc.title,
                     description: data.description,
-                    comments: data.comments
+                    comments: data.comments,
                 };
                 setNewDoc({ ...newDoc, ...newObject });
                 setValue(data.description);
@@ -103,24 +109,21 @@ function UpdateDoc() {
     }, [socket]);
 
     const updateState = (text) => {
-        console.log("updateState: ", newDoc);
         if (socket) {
             let updatedDoc = {
                 _id: newDoc._id,
                 description: text,
-                comments: location.state.comments
+                comments: newDoc.comments,
             };
             let newObject = {
                 _id: newDoc._id,
                 title: newDoc.title,
                 description: text,
-                comments: location.state.comments
+                comments: newDoc.comments,
             };
             socket.emit("update", updatedDoc);
             setValue(text);
-            console.log("updateState: ", location.state.comments);
-            console.log("updateState: ", newDoc);
-            // setNewDoc({ ...newDoc, ...newObject });
+            setNewDoc({ ...newDoc, ...newObject });
         }
     };
 
@@ -131,33 +134,29 @@ function UpdateDoc() {
     }
 
     const addComment = async (comment) => {
-        // add the comment to the newDoc state, then...
-        console.log("Comment to be added:", comment);
-        setNewDoc(oldDoc => {
+        setNewDoc((oldDoc) => {
             return {
                 ...oldDoc,
-                comments: [
-                    ...oldDoc.comments,
-                    comment
-                ]
-            }
-        })
-        console.log("After newDoc addComment:", newDoc);
-
-        // await docModel.updateDoc(newDoc);
-    }
+                comments: [...oldDoc.comments, comment],
+            };
+        });
+        
+        await docModel.updateDoc(newDoc);
+    };
 
     return (
         <>
-            <button className="create-btn" onClick={saveText}>
-                Update
-            </button>
-            <button className="commentBox-btn" onClick={commentInput}>
-                Add a comment
-            </button>
-            <button className="pdf-btn" onClick={downloadPDF}>
-                Download as PDF
-            </button>
+            <div>
+                <button className="create-btn" onClick={saveText}>
+                    Update
+                </button>
+                <button className="commentBox-btn" onClick={commentInput}>
+                    Add a comment
+                </button>
+                <button className="pdf-btn" onClick={downloadPDF}>
+                    Download as PDF
+                </button>
+            </div>
             <div>
                 <input
                     value={newDoc.title}
@@ -166,12 +165,15 @@ function UpdateDoc() {
                     name="title"
                 />
                 {showCommentBox && (
-                    <CommentBox editorRef={editorRef}
-                    setShowCommentBox={setShowCommentBox}
+                    <CommentBox
+                        editorRef={editorRef}
+                        setShowCommentBox={setShowCommentBox}
                         showCommentBox={showCommentBox}
-                    addCommentToDoc = {addComment} />
+                        addCommentToDoc={addComment}
+                    />
                 )}
-                <div className="neg-margin">
+                <div className="editor-comments-wrapper">
+                <div className="editor-wrapper">
                     <ReactQuill
                         className="editor"
                         name="description"
@@ -182,9 +184,11 @@ function UpdateDoc() {
                         style={{ height: "3in", margin: "1em", flex: "1" }}
                         ref={editorRef}
                     />
-                    </div>
-                <div>
-                    <p>HI</p>
+                </div>
+                <div className="comments-wrapper">
+                        <h3>Comments:</h3>
+                        <CommentList docs={newDoc}/>
+                </div>
                 </div>
             </div>
         </>

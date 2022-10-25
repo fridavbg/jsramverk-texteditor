@@ -11,7 +11,6 @@ function DocCard({ doc, index }) {
     const [showForm, setShowForm] = useState(false);
 
     const editDoc = () => {
-        console.log("DocCard:", doc);
         navigate("/edit", {
             replace: true,
             state: {
