@@ -14,7 +14,7 @@ const docModel = {
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                query: "{ documents { _id title description comments } }",
+                query: "{ documents { _id title description comments { user comment range { index length }} } }",
             }),
         });
 

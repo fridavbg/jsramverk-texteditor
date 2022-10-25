@@ -34,7 +34,7 @@ function UpdateDoc() {
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
-        comments: []
+        comments: location.state.comments
     });
 
     const addComment = async (comment) => {
