@@ -6,10 +6,15 @@ function CommentList({ docs }) {
         console.log("CommentList:", comment);
         return (
             <div className="comment">
-                <p>{comment.comment}</p>
-                <p>Index: {comment.range.index}</p>
-                <p>Length: {comment.range.length}</p>
-                <p>Written by: {comment.user}</p>
+                <p>
+                    Comment: <br />
+                    {comment.comment}</p>
+                <p>
+                    Position:  <br />
+                    {comment.range.index} - {comment.range.length}</p>
+                <p>
+                    Written by:  <br />
+                    {comment.user}</p>
             </div>
         );
     });
