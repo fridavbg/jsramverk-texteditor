@@ -34,8 +34,10 @@ function UpdateDoc() {
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
-        comments: location.state.comments
+        comments: location.state.doc.comments
     });
+
+    console.log("currentDoc", newDoc);
 
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
@@ -101,21 +103,24 @@ function UpdateDoc() {
     }, [socket]);
 
     const updateState = (text) => {
+        console.log("updateState: ", newDoc);
         if (socket) {
             let updatedDoc = {
                 _id: newDoc._id,
                 description: text,
-                comments: newDoc.comments
+                comments: location.state.comments
             };
             let newObject = {
                 _id: newDoc._id,
                 title: newDoc.title,
                 description: text,
-                comments: newDoc.comments
+                comments: location.state.comments
             };
             socket.emit("update", updatedDoc);
             setValue(text);
-            setNewDoc({ ...newDoc, ...newObject });
+            console.log("updateState: ", location.state.comments);
+            console.log("updateState: ", newDoc);
+            // setNewDoc({ ...newDoc, ...newObject });
         }
     };
 
