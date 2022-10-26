@@ -31,11 +31,9 @@ function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showComment
         <>
             <form className="comment-form">
             <h3>Add your comment and mark some text in the editor</h3>
-                <label
-                    className="label">Comment:</label>
                     <input type="comment" text="comment" name="comment" onChange={changeComment}
                     required />
-                    <button className="send-btn" onClick={addComment} >Submit comment</button>
+                    <button className="btn" onClick={addComment} >Submit comment</button>
             </form>
         </>
     )

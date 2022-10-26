@@ -3,7 +3,6 @@ import CommentCard from "./CommentCard";
 function CommentList({ docs }) {
 
     const commentCard = Object.entries(docs.comments).map(([key, comment]) => {
-        console.log("CommentList:", comment);
         return (
             <CommentCard
                 key={key}

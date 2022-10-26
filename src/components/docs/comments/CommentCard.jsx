@@ -2,7 +2,6 @@ function CommentCard({ comment, index }) {
     return (
         <div className="comment">
             <p>
-                Comment: <br />
                 {comment.comment}
             </p>
             <p>

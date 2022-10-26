@@ -39,3 +39,8 @@ q {
     font: 16px $font-stack;
     margin-right: 1em;
 }
+
+.comment > p:first-child {
+    border: 1px solid black;
+    padding: 2em;
+}

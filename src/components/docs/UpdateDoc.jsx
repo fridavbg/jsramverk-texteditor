@@ -150,10 +150,10 @@ function UpdateDoc() {
                 <button className="create-btn" onClick={saveText}>
                     Update
                 </button>
-                <button className="commentBox-btn" onClick={commentInput}>
+                <button className="create-btn" onClick={commentInput}>
                     Add a comment
                 </button>
-                <button className="pdf-btn" onClick={downloadPDF}>
+                <button className="btn" onClick={downloadPDF}>
                     Download as PDF
                 </button>
             </div>
