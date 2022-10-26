@@ -59,7 +59,7 @@ function Login({ setToken }) {
         return (
             <div className="login-form">
                 <h1 className="title">Login / Registrera</h1>
-                <p class="err-msg">
+                <p className="err-msg">
                     {error || message}
                 </p>
                 <label>Email:</label>
@@ -83,9 +83,11 @@ function Login({ setToken }) {
     return (
         <div className="login-form">
             <h1 className="title">Login / Registrera</h1>
-
             <label>Email:</label>
-            <input type="email" name="email" onChange={changeHandler} />
+            <input type="email"
+                name="email"
+                onChange={changeHandler}
+            />
             <label>Password:</label>
             <input
                 type="password"
@@ -93,7 +95,10 @@ function Login({ setToken }) {
                 onChange={changeHandler}
                 required
             />
-            <button className="register-btn" onClick={register}>
+            <button
+                className="register-btn"
+                onClick={register}
+            >
                 Registrera
             </button>
             <button className="login-btn" onClick={login}>

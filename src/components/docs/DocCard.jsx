@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Select from 'react-select';
 
 import emailModel from "../../models/mail";
 
@@ -7,7 +8,16 @@ import emailModel from "../../models/mail";
 function DocCard({ doc, index }) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
+    const [showNotification, setShowNotification] = useState(false);
+    const [notification, setNotification] = useState("");
     const [showForm, setShowForm] = useState(false);
+
+    const mailgun_emails = [
+        { label: "fperssontech@gmail.com", value: 1 },
+        { label: "efo@bth.se", value: 2 },
+        { label: "emil.folino@bth.se", value: 3 },
+    ];
+
 
     const editDoc = () => {
         navigate("/edit", {
@@ -18,20 +28,32 @@ function DocCard({ doc, index }) {
         });
     };
 
+    const notificationBox = () => {
+        setShowNotification(!showNotification);
+    };
+
     const emailForm = () => {
+        if (notification) {
+            setNotification("")
+            setShowNotification(!showNotification);
+        }
         setShowForm(!showForm);
     };
 
     function changeEmail(event) {
-        setEmail(event.target.value);
+        setEmail(event.label);
     }
 
     async function sendInvite(event) {
+        setShowNotification(!showNotification);
         event.preventDefault();
-        setShowForm(!showForm);
         let sent = await emailModel.sendMail(email);
-        console.log("DocCard:");
-        console.log(sent);
+        if (sent.status === 400) {
+            setNotification(sent.errors.message);
+        };
+        setNotification(sent.msg);
+        setShowNotification(!showNotification);
+        setShowForm(!showForm);
     };
 
     return (
@@ -44,12 +66,12 @@ function DocCard({ doc, index }) {
             <button className="invite-btn" onClick={emailForm}>
                 Invite someone to join
             </button>
+            {notificationBox && (
+                <p className={showNotification ? 'not-msg' : 'invisible'}>{notification}</p>
+            )}
             {showForm && (
                 <form className="email-form">
-                    <label className="label">Email:</label>
-                    <input type="email" text="email" name="email" onChange={changeEmail}
-                    required
-                    />
+                    <Select options={ mailgun_emails } onChange={changeEmail} />
                     <button className="send-btn" onClick={sendInvite}>Send</button>
                 </form>
             )}
