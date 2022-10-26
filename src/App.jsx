@@ -18,17 +18,17 @@ function App() {
     
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs(token);
-        console.log("User:", user);
-        console.log(description);
-        // All Descriptions default value
-        const descriptionsObject = allDocs.reduce((acc, doc) => {
-            let tmpObject = {};
-            tmpObject[doc._id] = doc.description;
-            return { ...acc, ...tmpObject };
-        }, {});
 
-        setDescription(descriptionsObject);
-        setDocs(allDocs);
+        // All Descriptions default value
+        if (allDocs) {
+            const descriptionsObject = allDocs.reduce((acc, doc) => {
+                let tmpObject = {};
+                tmpObject[doc._id] = doc.description;
+                return { ...acc, ...tmpObject };
+            }, {});
+            setDescription(descriptionsObject);
+            setDocs(allDocs);
+        }
     }
 
     useEffect(() => {

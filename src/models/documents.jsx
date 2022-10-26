@@ -6,21 +6,23 @@ const docModel = {
         ? "/"
         : "/~frpe21/editor/",
     getAllDocs: async function getAllDocs(token) {
-        const response = await fetch(`${docModel.baseUrl}/graphql`, {
-            method: "POST",
-            headers: {
-                "x-access-token": token,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify({
-                query: "{ documents { _id title description comments { user comment range { index length }} } }",
-            }),
-        });
-
-        const result = await response.json();
-
-        return result.data.documents;
+        if (token) {
+            const response = await fetch(`${docModel.baseUrl}/graphql`, {
+                method: "POST",
+                headers: {
+                    "x-access-token": token,
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    query: "{ documents { _id title description comments { user comment range { index length }} } }",
+                }),
+            });
+    
+            const result = await response.json();
+    
+            return result.data.documents;
+        }
     },
     createDoc: async function createDoc(newDoc) {
         const response = await fetch(`${docModel.baseUrl}/docs/create`, {
