@@ -1,15 +1,21 @@
 import { useEffect } from "react";
 
+import docModel from "../../models/documents";
 import DocCard from "./DocCard";
 
-function DocList({ docs, fetchDocs }) {
+function DocList({ docs, setDocs, token }) {
+
+    async function fetchDocs() {
+        const allDocs = await docModel.getAllDocs(token);
+        setDocs(allDocs);
+    }
     
     useEffect(() => {
         (async () => {
             await fetchDocs();
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [docs]);
 
 
     const docCards = docs.map((doc, index) => {
