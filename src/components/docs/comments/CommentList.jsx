@@ -1,24 +1,22 @@
+import CommentCard from "./CommentCard";
 
 function CommentList({ docs }) {
-    console.log("CommentList:", typeof docs.comments);
 
     const commentCard = Object.entries(docs.comments).map(([key, comment]) => {
         console.log("CommentList:", comment);
         return (
-            <div className="comment">
-                <p>
-                    Comment: <br />
-                    {comment.comment}</p>
-                <p>
-                    Position:  <br />
-                    {comment.range.index} - {comment.range.length}</p>
-                <p>
-                    Written by:  <br />
-                    {comment.user}</p>
-            </div>
+            <CommentCard
+                key={key}
+                comment={comment}
+            />
         );
     });
-    return <div>{commentCard}</div>;
+
+    if (commentCard.length > 0) {
+        return <div className="list">{commentCard}</div>;
+    } else {
+        return <p className="notification">There are no comments in this document at the moment</p>;
+    }
 }
 
 export default CommentList;

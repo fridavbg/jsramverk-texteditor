@@ -17,7 +17,7 @@ function App() {
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs(token);
         console.log("AllDocs:", allDocs);
-        // console.log(token);
+        console.log(description);
         // All Descriptions default value
         const descriptionsObject = allDocs.reduce((acc, doc) => {
             let tmpObject = {};
