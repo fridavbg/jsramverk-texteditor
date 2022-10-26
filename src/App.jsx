@@ -1,5 +1,6 @@
 import "./styles/app.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import docModel from "./models/documents";
 import Header from "./components/incl/Header";
@@ -10,13 +11,14 @@ import UpdateDoc from "./components/docs/UpdateDoc";
 import Login from "./components/auth/Login";
 
 function App() {
+    const [user, setUser] = useState({});
     const [docs, setDocs] = useState([]);
     const [description, setDescription] = useState({});
     const [token, setToken] = useState("");
     
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs(token);
-        console.log("AllDocs:", allDocs);
+        console.log("User:", user);
         console.log(description);
         // All Descriptions default value
         const descriptionsObject = allDocs.reduce((acc, doc) => {
@@ -43,19 +45,28 @@ function App() {
                 <Route path="/" element={<Main token={token} />} />
                 {token ? (
                     <>
-                        <Route path="/docs" element={<DocList
+                        <Route path="/docs"
+                            element={<DocList
                             docs={docs}
                             setDocs={setDocs}
                             token={token}
                         />} />
-                        <Route path="/create" element={<CreateEditor />} />
-                        <Route path="/edit" element={<UpdateDoc />} />
+                        <Route path="/create"
+                            element={<CreateEditor />} />
+                        <Route
+                            path="/edit"
+                            element={
+                                <UpdateDoc
+                                user={user}
+                                />} />
                     </>
                 ) : (
                     <>
                         <Route
                             path="/login"
                                 element={<Login
+                                    setUser={setUser}
+                                    user={user}
                                     setToken={setToken} />}
                         />
                     </>

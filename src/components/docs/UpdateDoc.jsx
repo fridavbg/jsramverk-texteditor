@@ -28,7 +28,7 @@ const modules = {
     ],
 };
 
-function UpdateDoc() {
+function UpdateDoc({user}) {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -43,7 +43,6 @@ function UpdateDoc() {
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
-    const [showCommentSection, setShowCommentSection] = useState(false);
 
     let newObject = {};
 
@@ -51,12 +50,6 @@ function UpdateDoc() {
         setShowCommentBox(!showCommentBox);
     };
 
-    const commentSection = () => {
-        if (newDoc.comments.length > 0) {
-            setShowCommentSection(true);
-        }
-        
-    };
 
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
@@ -167,6 +160,7 @@ function UpdateDoc() {
                 {showCommentBox && (
                     <CommentBox
                         editorRef={editorRef}
+                        user={user}
                         setShowCommentBox={setShowCommentBox}
                         showCommentBox={showCommentBox}
                         addCommentToDoc={addComment}

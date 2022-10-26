@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showCommentBox }) {
+function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showCommentBox, user }) {
     const unprivilegedEditor = editorRef.current.unprivilegedEditor;
     const [newComment, setNewComment] = useState({
         comment: "",
-        user: "fperssontech@gmail.com",
+        user: user.email,
         range: {}
     });
     let newObject = {};

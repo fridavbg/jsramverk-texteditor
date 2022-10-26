@@ -3,9 +3,8 @@ import { useState } from "react";
 
 import authModel from "../../models/auth";
 
-function Login({ setToken }) {
+function Login({ setToken, user, setUser }) {
     const navigate = useNavigate();
-    const [user, setUser] = useState({});
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
