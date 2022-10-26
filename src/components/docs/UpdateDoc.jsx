@@ -116,6 +116,8 @@ function UpdateDoc({user}) {
             };
             socket.emit("update", updatedDoc);
             setValue(text);
+            console.log("updateState: ", location.state.comments);
+            console.log("updateState: ", updatedDoc);
             setNewDoc({ ...newDoc, ...newObject });
         }
     };
@@ -127,14 +129,25 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
+        console.log("newDoc.comments: ", newDoc.comments);
+        console.log("Cmt to be added: ", comment);
+        
+        let newObject = {
+            _id: newDoc._id,
+            title: newDoc.title,
+            description: newDoc.description,
+            comments: newDoc.comments.concat(comment),
+        };
         setNewDoc((oldDoc) => {
             return {
                 ...oldDoc,
                 comments: [...oldDoc.comments, comment],
             };
         });
-        
-        await docModel.updateDoc(newDoc);
+        console.log("Object with added cmt:", newObject);
+        console.log("NewDoc added cmt:", newDoc);
+
+        await docModel.updateDoc(newObject);
     };
 
     return (
