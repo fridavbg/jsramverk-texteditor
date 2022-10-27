@@ -4,10 +4,10 @@ function CommentCard({ comment, index }) {
             <p>
                 {comment.comment}
             </p>
-            <p>
+            {/* <p>
                 Position: <br />
                 {comment.range.index} - {comment.range.length}
-            </p>
+            </p> */}
             <p>
                 Written by: <br />
                 {comment.user}

@@ -1,14 +1,10 @@
-import { useEffect } from "react";
-
 import CommentCard from "./CommentCard";
 
-import docModel from "../../../models/documents";
+function CommentList({ doc, editorRef }) {
+    // const editor = editorRef.current.editor;
 
-function CommentList({ doc }) {
+    // editor.formatText(comment.range.index, comment.range.length, 'background', color);
     let commentCard = [];
-
-    // console.log(doc);
-    // console.log(typeof doc);
 
     if (doc) {
         commentCard = Object.entries(doc.comments).map(([key, comment]) => {

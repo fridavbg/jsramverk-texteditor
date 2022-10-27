@@ -34,12 +34,14 @@ function UpdateDoc({user}) {
     const location = useLocation();
     const navigate = useNavigate();
     const editorRef = useRef();
+
     const [newDoc, setNewDoc] = useState({
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
         comments: location.state.doc.comments,
     });
+
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
@@ -77,7 +79,6 @@ function UpdateDoc({user}) {
     }, []);
 
     const commentInput = () => {
-        generateColor();
         setShowCommentBox(!showCommentBox);
     };
     
@@ -146,19 +147,16 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
-        const editor = editorRef.current.editor;
+        // const editor = editorRef.current.editor;
 
-        editor.formatText(comment.range.index, comment.range.length, 'background', color);
+        // editor.formatText(comment.range.index, comment.range.length, 'background', color);
 
-        console.log(newDoc);
         let newObject = {
             _id: newDoc._id,
             title: newDoc.title,
             description: newDoc.description,
             comments: [...newDoc.comments, comment],
         };
-
-        console.log(newObject);
 
         await docModel.updateDoc(newObject);
     };
@@ -207,7 +205,7 @@ function UpdateDoc({user}) {
                 </div>
                 <div className="comments-wrapper">
                         <h3>Comments:</h3>
-                        <CommentList setNewDoc={setNewDoc} doc={newDoc}/>
+                        <CommentList setNewDoc={setNewDoc} doc={newDoc} />
                 </div>
                 </div>
             </div>
