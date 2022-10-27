@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showCommentBox, user }) {
+    
     const unprivilegedEditor = editorRef.current.unprivilegedEditor;
     const [newComment, setNewComment] = useState({
         comment: "",
@@ -16,13 +17,30 @@ function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showComment
 
     async function addComment(event) {
         event.preventDefault();
+        
         let range = unprivilegedEditor.getSelection();
+
+        var text = unprivilegedEditor.getText(range.index, range.length);
+        
+        console.log('User has highlighted', text);
+
+        let delta = [{
+            format: {
+                index: range.index,
+                length: range.length
+            },
+            attributes: {
+                bold: true
+            }
+        }];
+        
+        console.log("CommentBox: ", delta);
         if (range === null || newComment.comment === "") {
             alert("Did you forget to mark some text or add some text for the comment?");
         } else {
             newComment["range"] = range;
             // console.log("CommentBox:", newComment);
-            addCommentToDoc(newComment);
+            addCommentToDoc(delta, newComment);
             setShowCommentBox(!showCommentBox);
         }
     };

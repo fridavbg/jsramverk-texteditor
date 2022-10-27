@@ -38,7 +38,7 @@ function Login({ setToken, user, setUser }) {
         setMessage("");
         setError("");
         const loginResult = await authModel.login(user);
-        console.log("login:", loginResult.data);
+        // console.log("login:", loginResult.data);
 
         if (loginResult.errors !== undefined) {
             setError(loginResult.errors.message);

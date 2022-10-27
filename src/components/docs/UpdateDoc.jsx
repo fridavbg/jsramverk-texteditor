@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
+import Delta from 'quill-delta';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { pdfExporter } from "quill-to-pdf";
@@ -116,8 +117,6 @@ function UpdateDoc({user}) {
             };
             socket.emit("update", updatedDoc);
             setValue(text);
-            console.log("updateState: ", location.state.comments);
-            console.log("updateState: ", updatedDoc);
             setNewDoc({ ...newDoc, ...newObject });
         }
     };
@@ -128,9 +127,18 @@ function UpdateDoc({user}) {
         saveAs(blob, `${newDoc.title}.pdf`);
     }
 
-    const addComment = async (comment) => {
-        console.log("newDoc.comments: ", newDoc.comments);
-        console.log("Cmt to be added: ", comment);
+    const addComment = async (delta, comment) => {
+        console.log("Delta: " , delta);
+        const editor = editorRef.current.editor;
+        
+        // editor.updateContents(new Delta()
+        //     .retain(comment.range.index, { bold: true })
+        //     .retain(comment.range.length)
+        // );
+
+        editor.formatText(comment.range.index, comment.range.length, 'background', 'green');
+
+        console.log(editor);
         
         let newObject = {
             _id: newDoc._id,
@@ -138,14 +146,13 @@ function UpdateDoc({user}) {
             description: newDoc.description,
             comments: newDoc.comments.concat(comment),
         };
+
         setNewDoc((oldDoc) => {
             return {
                 ...oldDoc,
                 comments: [...oldDoc.comments, comment],
             };
         });
-        console.log("Object with added cmt:", newObject);
-        console.log("NewDoc added cmt:", newDoc);
 
         await docModel.updateDoc(newObject);
     };
@@ -188,7 +195,7 @@ function UpdateDoc({user}) {
                         value={value}
                         onChange={updateState}
                         modules={modules}
-                        style={{ height: "3in", margin: "1em", flex: "1" }}
+                        style={{ height: "9in", margin: "1em", flex: "1" }}
                         ref={editorRef}
                     />
                 </div>

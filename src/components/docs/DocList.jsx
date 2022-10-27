@@ -15,7 +15,7 @@ function DocList({ docs, setDocs, token }) {
             await fetchDocs();
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [docs]);
+    }, []);
 
 
     const docCards = docs.map((doc, index) => {
