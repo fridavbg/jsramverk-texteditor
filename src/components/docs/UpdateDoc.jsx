@@ -1,6 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import Delta from 'quill-delta';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { pdfExporter } from "quill-to-pdf";
@@ -10,6 +9,8 @@ import docModel from "../../models/documents";
 import CommentBox from "../docs/comments/CommentBox";
 import CommentList from "../docs/comments/CommentList";
 
+import useGenerateRandomColor 
+    from "../docs/comments/useGenerateRandomColor";
 
 const modules = {
     toolbar: [
@@ -39,15 +40,18 @@ function UpdateDoc({user}) {
         description: location.state.doc.description,
         comments: location.state.doc.comments,
     });
-
+    
     const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
+    const { color, generateColor } 
+            = useGenerateRandomColor();
 
     let newObject = {};
 
     const commentInput = () => {
+        generateColor();
         setShowCommentBox(!showCommentBox);
     };
 
@@ -127,18 +131,11 @@ function UpdateDoc({user}) {
         saveAs(blob, `${newDoc.title}.pdf`);
     }
 
-    const addComment = async (delta, comment) => {
-        console.log("Delta: " , delta);
+    const addComment = async (comment) => {
+        console.log(color);
         const editor = editorRef.current.editor;
-        
-        // editor.updateContents(new Delta()
-        //     .retain(comment.range.index, { bold: true })
-        //     .retain(comment.range.length)
-        // );
 
-        editor.formatText(comment.range.index, comment.range.length, 'background', 'green');
-
-        console.log(editor);
+        editor.formatText(comment.range.index, comment.range.length, 'background', color);
         
         let newObject = {
             _id: newDoc._id,

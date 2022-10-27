@@ -38,7 +38,6 @@ const docModel = {
         return result.data;
     },
     updateDoc: async function updateDoc(updateDoc) {
-        // console.log("DocModel", updateDoc);
         const response = await fetch(
             `${docModel.baseUrl}/docs/edit/${updateDoc._id}`,
             {
