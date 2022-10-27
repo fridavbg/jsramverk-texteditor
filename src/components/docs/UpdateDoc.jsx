@@ -45,8 +45,6 @@ function UpdateDoc({user}) {
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
-    const { color, generateColor } 
-            = useGenerateRandomColor();
 
     let newObject = {};
 
@@ -147,6 +145,7 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
+        // console.log(comment);
         // const editor = editorRef.current.editor;
 
         // editor.formatText(comment.range.index, comment.range.length, 'background', color);
@@ -157,7 +156,7 @@ function UpdateDoc({user}) {
             description: newDoc.description,
             comments: [...newDoc.comments, comment],
         };
-
+        // console.log(newObject);
         await docModel.updateDoc(newObject);
     };
 

@@ -1,13 +1,12 @@
 function CommentCard({ comment, index }) {
+    const commentStyle = {
+        backgroundColor: "#cccc",
+        boxShadow: '3px 5px 9px' + comment.color,
+    };
+
     return (
         <div className="comment">
-            <p>
-                {comment.comment}
-            </p>
-            {/* <p>
-                Position: <br />
-                {comment.range.index} - {comment.range.length}
-            </p> */}
+            <p style={commentStyle}>{comment.comment}</p>
             <p>
                 Written by: <br />
                 {comment.user}

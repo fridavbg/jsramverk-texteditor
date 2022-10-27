@@ -4,8 +4,10 @@ import useGenerateRandomColor
     from "./useGenerateRandomColor";
 
 function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showCommentBox, user }) {
-    
     const unprivilegedEditor = editorRef.current.unprivilegedEditor;
+    const { color, generateColor } 
+        = useGenerateRandomColor();
+
     const [newComment, setNewComment] = useState({
         comment: "",
         user: user.email,
@@ -13,18 +15,15 @@ function CommentBox({ addCommentToDoc, editorRef, setShowCommentBox, showComment
         color: ""
     });
     let newObject = {};
-    const { color, generateColor } 
-    = useGenerateRandomColor();
-
 
     function changeComment(event) {
+        generateColor();
         newObject["comment"] = event.target.value;
         setNewComment({...newComment, ...newObject });
     }
 
     async function addComment(event) {
         event.preventDefault();
-        generateColor();
         let range = unprivilegedEditor.getSelection();
         
         if (range === null || newComment.comment === "") {

@@ -18,6 +18,7 @@ function App() {
     
     async function fetchDocs() {
         const allDocs = await docModel.getAllDocs(token);
+        console.log(allDocs);
 
         // All Descriptions default value
         if (allDocs) {
