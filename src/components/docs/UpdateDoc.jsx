@@ -33,15 +33,13 @@ const modules = {
 function UpdateDoc({user}) {
     const location = useLocation();
     const navigate = useNavigate();
-
+    const editorRef = useRef();
     const [newDoc, setNewDoc] = useState({
         _id: location.state.doc._id,
         title: location.state.doc.title,
         description: location.state.doc.description,
         comments: location.state.doc.comments,
     });
-    
-    const editorRef = useRef();
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
@@ -50,11 +48,22 @@ function UpdateDoc({user}) {
 
     let newObject = {};
 
-    const commentInput = () => {
-        generateColor();
-        setShowCommentBox(!showCommentBox);
-    };
+    async function fetchOneDoc() {
+        let oneDoc;
 
+        if (typeof newDoc._id === 'string') {
+            oneDoc = await docModel.getOneDoc(newDoc._id);
+        };
+
+        setNewDoc(oneDoc.data);
+    }
+
+    useEffect(() => {
+        (async () => {
+            await fetchOneDoc();
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [newDoc]);
 
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
@@ -67,6 +76,11 @@ function UpdateDoc({user}) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const commentInput = () => {
+        generateColor();
+        setShowCommentBox(!showCommentBox);
+    };
+    
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
         setNewDoc({ ...newDoc, ...newObject });
@@ -132,24 +146,19 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
-        console.log(color);
         const editor = editorRef.current.editor;
 
         editor.formatText(comment.range.index, comment.range.length, 'background', color);
-        
+
+        console.log(newDoc);
         let newObject = {
             _id: newDoc._id,
             title: newDoc.title,
             description: newDoc.description,
-            comments: newDoc.comments.concat(comment),
+            comments: [...newDoc.comments, comment],
         };
 
-        setNewDoc((oldDoc) => {
-            return {
-                ...oldDoc,
-                comments: [...oldDoc.comments, comment],
-            };
-        });
+        console.log(newObject);
 
         await docModel.updateDoc(newObject);
     };
@@ -198,7 +207,7 @@ function UpdateDoc({user}) {
                 </div>
                 <div className="comments-wrapper">
                         <h3>Comments:</h3>
-                        <CommentList docs={newDoc}/>
+                        <CommentList setNewDoc={setNewDoc} doc={newDoc}/>
                 </div>
                 </div>
             </div>

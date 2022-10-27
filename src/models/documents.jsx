@@ -24,6 +24,20 @@ const docModel = {
             return result.data.documents;
         }
     },
+    getOneDoc: async function getOneDoc(id) {
+        const response = await fetch(
+            `${docModel.baseUrl}/docs/edit/${id}`,
+            {
+                headers: {
+                    "content-type": "application/json",
+                },
+                method: "GET",
+            }
+        );
+        const result = await response.json();
+
+        return result;
+    },  
     createDoc: async function createDoc(newDoc) {
         const response = await fetch(`${docModel.baseUrl}/docs/create`, {
             body: JSON.stringify(newDoc),
