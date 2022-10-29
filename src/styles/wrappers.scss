@@ -56,3 +56,32 @@
 .comment {
     margin: 1em 1em 1em 1em;
 }
+
+@media (max-width: 1153px ) {
+    .comments-wrapper {
+        font: 12px $font-stack;
+    }
+    .editor-wrapper {
+        width: 75%;
+        margin-bottom: 4em;
+    }
+    .comment > p:first-child {
+        padding: 0.3em
+    }
+}
+
+@media (max-width: 769px ) {
+    .editor-comments-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .editor-wrapper {
+        width: 100%;
+        margin: 1em;
+    }
+    .comments-wrapper {
+        width: 90%;
+        margin: 2em;
+    }
+}
