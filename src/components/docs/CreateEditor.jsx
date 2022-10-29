@@ -28,7 +28,6 @@ function CreateEditor() {
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
-    //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
@@ -72,18 +71,7 @@ function CreateEditor() {
                     name="text"
                     theme="snow"
                     placeholder={"Write something awesome..."}
-                    onChange={(event) => {
-                        if (parse(event).length > 0) {
-                            if (parse(event).length > 0) {
-                                Object.entries(parse(event)).map(([key, text]) => {
-                                    changeText(text.props.children)
-                                    return;
-                                });
-                            }
-                            changeText(parse(event))
-                        };
-                        // ;
-                    }}
+                    onChange={changeText}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
