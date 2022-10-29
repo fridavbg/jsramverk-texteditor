@@ -9,9 +9,6 @@ import docModel from "../../models/documents";
 import CommentBox from "../docs/comments/CommentBox";
 import CommentList from "../docs/comments/CommentList";
 
-import useGenerateRandomColor 
-    from "../docs/comments/useGenerateRandomColor";
-
 const modules = {
     toolbar: [
         ["bold", "italic", "underline", "strike"],
@@ -96,7 +93,7 @@ function UpdateDoc({user}) {
             alert("Please fill in a title and a text");
             return;
         }
-
+        console.log(newDoc);
         await docModel.updateDoc(newDoc);
         navigate("/docs");
     }
@@ -204,7 +201,7 @@ function UpdateDoc({user}) {
                 </div>
                 <div className="comments-wrapper">
                         <h3>Comments:</h3>
-                        <CommentList setNewDoc={setNewDoc} doc={newDoc} />
+                        <CommentList setNewDoc={setNewDoc} doc={newDoc} editorRef={editorRef} />
                 </div>
                 </div>
             </div>
