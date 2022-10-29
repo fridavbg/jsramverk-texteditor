@@ -1,19 +1,13 @@
-import Delta from "react-quill";
+import { useRef } from "react";
 
 import CommentCard from "./CommentCard";
 
-function CommentList({ doc, editorRef }) {
-    let editor;
-    if (editorRef.current !== undefined) {
-        editor = editorRef.current.editor;
-    }
+function CommentList({ comments }) {
     let commentCard = [];
 
-    if (doc) {
-        commentCard = Object.entries(doc.comments).map(([key, comment]) => {
-            if (editor !== undefined) {
-                editor.formatText(comment.range.index, comment.range.length, 'background', comment.color);
-            }
+
+    if (comments) {
+        commentCard = Object.entries(comments).map(([key, comment]) => {
             return (
                 <CommentCard
                     key={key}

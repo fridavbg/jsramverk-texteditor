@@ -28,7 +28,6 @@ function CreateEditor() {
     const editorRef = useRef();
     let newObject = {};
     const navigate = useNavigate();
-    //if (editorRef.current) console.log(editorRef.current.editor.getContents());
 
     function changeTitle(event) {
         newObject[event.target.name] = event.target.value;
@@ -72,9 +71,7 @@ function CreateEditor() {
                     name="text"
                     theme="snow"
                     placeholder={"Write something awesome..."}
-                    onChange={(event) => {
-                        changeText(parse(event).props.children);
-                    }}
+                    onChange={changeText}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
                     ref={editorRef}
