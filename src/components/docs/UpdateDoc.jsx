@@ -47,10 +47,19 @@ function UpdateDoc({user}) {
 
     async function fetchComments() {
         let comments;
-
+        
         if (typeof newDoc._id === 'string') {
             comments = await docModel.getComments(newDoc._id);
         };
+        if (editorRef.current !== null) {
+            let editor = editorRef.current.getEditor();
+
+            Object.entries(comments).map(([key, comment]) => {
+                editor.formatText(comment.range.index, comment.range.length, 'background', comment.color);
+                return;
+            }); 
+        };
+
         setComments(comments);
     }
 
@@ -141,13 +150,14 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
+
         let newObject = {
             _id: newDoc._id,
             title: newDoc.title,
             description: newDoc.description,
             comments: [...newDoc.comments, comment],
         };
-        // console.log(newObject);
+
         await docModel.updateDoc(newObject);
     };
 

@@ -3,14 +3,11 @@ import { useRef } from "react";
 import CommentCard from "./CommentCard";
 
 function CommentList({ comments }) {
-    const editorRef = useRef();
     let commentCard = [];
+
 
     if (comments) {
         commentCard = Object.entries(comments).map(([key, comment]) => {
-            // if (editor !== undefined) {
-            //     editor.formatText(comment.range.index, comment.range.length, 'background', comment.color);
-            // }
             return (
                 <CommentCard
                     key={key}

@@ -73,7 +73,16 @@ function CreateEditor() {
                     theme="snow"
                     placeholder={"Write something awesome..."}
                     onChange={(event) => {
-                        changeText(parse(event).props.children);
+                        if (parse(event).length > 0) {
+                            if (parse(event).length > 0) {
+                                Object.entries(parse(event)).map(([key, text]) => {
+                                    changeText(text.props.children)
+                                    return;
+                                });
+                            }
+                            changeText(parse(event))
+                        };
+                        // ;
                     }}
                     modules={modules}
                     style={{ height: "3in", margin: "1em", flex: "1" }}
