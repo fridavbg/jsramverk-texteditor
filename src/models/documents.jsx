@@ -24,7 +24,7 @@ const docModel = {
             return result.data.documents;
         }
     },
-    getOneDoc: async function getOneDoc(id) {
+    getComments: async function getComments(id) {
         const response = await fetch(
             `${docModel.baseUrl}/docs/edit/${id}`,
             {
@@ -36,7 +36,7 @@ const docModel = {
         );
         const result = await response.json();
 
-        return result;
+        return result.data;
     },  
     createDoc: async function createDoc(newDoc) {
         const response = await fetch(`${docModel.baseUrl}/docs/create`, {

@@ -38,29 +38,28 @@ function UpdateDoc({user}) {
         description: location.state.doc.description,
         comments: location.state.doc.comments,
     });
-
+    const [comments, setComments] = useState([]);
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
 
     let newObject = {};
 
-    async function fetchOneDoc() {
-        let oneDoc;
+    async function fetchComments() {
+        let comments;
 
         if (typeof newDoc._id === 'string') {
-            oneDoc = await docModel.getOneDoc(newDoc._id);
+            comments = await docModel.getComments(newDoc._id);
         };
-
-        setNewDoc(oneDoc.data);
+        setComments(comments);
     }
 
     useEffect(() => {
         (async () => {
-            await fetchOneDoc();
+            await fetchComments();
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [newDoc]);
+    }, [comments]);
 
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
@@ -107,7 +106,7 @@ function UpdateDoc({user}) {
                     _id: newDoc._id,
                     title: newDoc.title,
                     description: data.description,
-                    comments: data.comments,
+                    comments: newDoc.comments,
                 };
                 setNewDoc({ ...newDoc, ...newObject });
                 setValue(data.description);
@@ -142,11 +141,6 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
-        // console.log(comment);
-        // const editor = editorRef.current.editor;
-
-        // editor.formatText(comment.range.index, comment.range.length, 'background', color);
-
         let newObject = {
             _id: newDoc._id,
             title: newDoc.title,
@@ -201,7 +195,7 @@ function UpdateDoc({user}) {
                 </div>
                 <div className="comments-wrapper">
                         <h3>Comments:</h3>
-                        <CommentList setNewDoc={setNewDoc} doc={newDoc} editorRef={editorRef} />
+                        <CommentList comments={comments} />
                 </div>
                 </div>
             </div>
