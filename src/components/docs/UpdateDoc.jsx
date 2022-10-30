@@ -38,7 +38,7 @@ function UpdateDoc({user}) {
         description: location.state.doc.description,
         comments: location.state.doc.comments,
     });
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(location.state.doc.comments);
     const [socket, setSocket] = useState(null);
     const [value, setValue] = useState(newDoc.description);
     const [showCommentBox, setShowCommentBox] = useState(false);
@@ -56,10 +56,9 @@ function UpdateDoc({user}) {
 
             Object.entries(comments).map(([key, comment]) => {
                 editor.formatText(comment.range.index, comment.range.length, 'background', comment.color);
-                return;
+                return "";
             }); 
         };
-
         setComments(comments);
     }
 
@@ -69,6 +68,25 @@ function UpdateDoc({user}) {
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [comments]);
+
+    useEffect(() => {
+        if (socket) {
+            // create room with ID
+            socket.emit("create", newDoc._id);
+            socket.on("update", function (data) {
+                let newObject = {
+                    _id: newDoc._id,
+                    title: newDoc.title,
+                    description: data.description,
+                    comments: data.comments,
+                };
+                setNewDoc({ ...newDoc, ...newObject });
+
+                setValue(data.description);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [socket]);
 
     useEffect(() => {
         setSocket(io(docModel.baseUrl));
@@ -101,28 +119,10 @@ function UpdateDoc({user}) {
             alert("Please fill in a title and a text");
             return;
         }
-        console.log(newDoc);
+
         await docModel.updateDoc(newDoc);
         navigate("/docs");
     }
-
-    useEffect(() => {
-        if (socket) {
-            // create room with ID
-            socket.emit("create", newDoc._id);
-            socket.on("update", function (data) {
-                let newObject = {
-                    _id: newDoc._id,
-                    title: newDoc.title,
-                    description: data.description,
-                    comments: newDoc.comments,
-                };
-                setNewDoc({ ...newDoc, ...newObject });
-                setValue(data.description);
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [socket]);
 
     const updateState = (text) => {
         if (socket) {
@@ -131,15 +131,13 @@ function UpdateDoc({user}) {
                 description: text,
                 comments: newDoc.comments,
             };
-            let newObject = {
-                _id: newDoc._id,
-                title: newDoc.title,
-                description: text,
-                comments: newDoc.comments,
-            };
+        
+            console.log("send to socket", updatedDoc);
+            console.log("comments", comments);
             socket.emit("update", updatedDoc);
             setValue(text);
-            setNewDoc({ ...newDoc, ...newObject });
+            setNewDoc({ ...newDoc, ...updatedDoc });
+
         }
     };
 
@@ -150,14 +148,19 @@ function UpdateDoc({user}) {
     }
 
     const addComment = async (comment) => {
-
+        let comments; 
         let newObject = {
             _id: newDoc._id,
             title: newDoc.title,
             description: newDoc.description,
             comments: [...newDoc.comments, comment],
         };
-
+        console.log(newObject.comments);
+        comments = newObject.comments;
+        setComments(comments);
+        console.log("comments", comments);
+        setNewDoc({ ...newDoc, ...newObject });
+        console.log("newDoc", newDoc);
         await docModel.updateDoc(newObject);
     };
 

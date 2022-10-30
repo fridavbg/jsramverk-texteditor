@@ -18,7 +18,6 @@ const docModel = {
                     query: "{ documents { _id title description comments { user color comment range { index length }} } }",
                 }),
             });
-    
             const result = await response.json();
     
             return result.data.documents;
